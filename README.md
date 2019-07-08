@@ -11,7 +11,7 @@ Schedule
 
 * week 1_07/08
 
-  [hw1]https://github.com/Rachel0718/data_science/blob/master/hw1.Rmd
+  [hw1](https://github.com/Rachel0718/data_science/blob/master/hw1.Rmd)
   
 * week 1_07/11
 * week 2_07/15
