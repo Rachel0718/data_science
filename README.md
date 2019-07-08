@@ -5,7 +5,7 @@ Anouncement
  * Course : 108夏季學院─資料科學程式設計
  * Name : 張芮嘉
  * Student ID : 107208063
- * Department : 政大經濟系
+ * Department : 政大經濟系 一年級
  
 Schedule
 
