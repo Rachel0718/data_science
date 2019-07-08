@@ -24,9 +24,13 @@ Week 1_07/08
  * Note
 
 Week 1_07/11
+
 Week 2_07/15
+
 Week 2_07/18
+
 Week 3_07/22
+
 Week 3_07/25
 
 Final Project
