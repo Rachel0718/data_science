@@ -1,6 +1,6 @@
 # Data_Science
 
-## Anouncement
+## Introduction
 
  * Course : 108夏季學院─資料科學程式設計
  * Name : 張芮嘉
