@@ -6,16 +6,15 @@ Anouncement
  * Name : 張芮嘉
  * Student ID : 107208063
  * Department : 政大經濟系
- * Introduction : 大家好，我是張芮嘉，喜歡閱讀、騎腳踏車。
  
 Schedule
 
-* week 1 Mon
-* week 1 Thu
-* week 2 Mon
-* week 2 Thu
-* week 3 Mon
-* week 3 Thu
+* week 1_07/08
+* week 1_07/11
+* week 2_07/15
+* week 2_07/18
+* week 3_07/22
+* week 3_07/25
 
 Project
 
