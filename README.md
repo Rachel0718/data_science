@@ -11,7 +11,7 @@ Schedule
 
 * week 1_07/08
 
-  *R markdown ( https://rachel0718.github.io/data_science/week%201/hw_0.html )
+  *[R markdown] (https://rachel0718.github.io/data_science/week%201/hw_0.html)
 
 * week 1_07/11
 * week 2_07/15
