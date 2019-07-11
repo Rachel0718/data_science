@@ -1,12 +1,12 @@
 ---
-title: "data manipulation"
+title: "Data Manipulaiton"
 author: "Rachel Chang"
-date: "2019/7/11"
+date: "2019/7/12"
 output: html_document
 ---
 ```{r}
-path = "D:/data  science programming/data_science/week 2/data CO2/CO2.xlsx"
-path2 = "D:/data  science programming/data_science/week 2/data GDP/GDP.xlsx"
+path = "D:/資料科學程式設計/data_science/week 1_0711/data CO2/CO2.xlsx"
+path2 = "D:/資料科學程式設計/data_science/week 1_0711/data GDP/GDP.xlsx"
  
 library(readxl)
 c = read_excel(path)
