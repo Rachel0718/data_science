@@ -10,14 +10,13 @@
 
 ## Links
 
-  * [course website](https://www.peculab.org/2019/07/03/108-%e5%85%a8%e5%9c%8b%e5%a4%8f%e5%ad%a3%e5%ad%b8%e9%99%a2%e8%aa%b2%e7%a8%8b%e5%85%a7%e5%ae%b9/)
   * [PecuLab](https://www.peculab.org/category/courses/)
 
 ## Progress
 
  ### [Week 1_07/08](https://github.com/Rachel0718/data_science/tree/master/week%201_0708)
 
- ### [Week 1_07/11]
+ ### [Week 1_07/11](https://github.com/Rachel0718/data_science/tree/master/week%201_0711)
 
  ### Week 2_07/15
 
