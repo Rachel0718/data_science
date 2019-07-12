@@ -381,557 +381,563 @@ $(document).ready(function () {
 </div>
 
 
+<p>data source1 : <a href="https://data.worldbank.org/indicator/NY.GDP.MKTP.CD" class="uri">https://data.worldbank.org/indicator/NY.GDP.MKTP.CD</a></p>
+<p>data source2 : <a href="https://data.worldbank.org/indicator/EN.ATM.CO2E.KT" class="uri">https://data.worldbank.org/indicator/EN.ATM.CO2E.KT</a></p>
 <pre class="r"><code>path = &quot;D:/資料科學程式設計/data_science/week 1_0711/data CO2/CO2.xlsx&quot;
 path2 = &quot;D:/資料科學程式設計/data_science/week 1_0711/data GDP/GDP.xlsx&quot;
- 
+
+library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages ------------------------------------------ tidyverse 1.2.1 --</code></pre>
+<pre><code>## √ ggplot2 3.2.0     √ purrr   0.3.2
+## √ tibble  2.1.3     √ dplyr   0.8.3
+## √ tidyr   0.8.3     √ stringr 1.4.0
+## √ readr   1.3.1     √ forcats 0.4.0</code></pre>
+<pre><code>## -- Conflicts --------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr) 
 library(readxl)
 c = read_excel(path)
 a = read_excel(path2)
 
-library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>CO2 &lt;- select(c,&quot;Country Name&quot;,&quot;1960&quot;,&quot;2000&quot;)
-GDP &lt;- select(a,&quot;Country Name&quot;,&quot;1960&quot;,&quot;2000&quot;)
+CO2 &lt;- select(c,&quot;Country Name&quot;,&quot;2000&quot;)
+GDP &lt;- select(a,&quot;Country Name&quot;,&quot;2000&quot;)
 
 data_merge&lt;-merge(CO2, GDP, by=&quot;Country Name&quot;)
 data_merge</code></pre>
-<pre><code>##                                             Country Name       1960.x
-## 1                                            Afghanistan  0.046056713
-## 2                                                Albania  1.258194928
-## 3                                                Algeria  0.557120304
-## 4                                         American Samoa           NA
-## 5                                                Andorra           NA
-## 6                                                 Angola  0.100835336
-## 7                                    Antigua and Barbuda  0.677430677
-## 8                                             Arab World  0.645735873
-## 9                                              Argentina  2.383342970
-## 10                                               Armenia           NA
-## 11                                                 Aruba           NA
-## 12                                             Australia  8.582936643
-## 13                                               Austria  4.373318828
-## 14                                            Azerbaijan           NA
-## 15                                          Bahamas, The  3.749557215
-## 16                                               Bahrain  3.544478443
-## 17                                            Bangladesh           NA
-## 18                                              Barbados  0.746164170
-## 19                                               Belarus           NA
-## 20                                               Belgium  9.941594074
-## 21                                                Belize  0.477971846
-## 22                                                 Benin  0.066354063
-## 23                                               Bermuda  3.551373874
-## 24                                                Bhutan           NA
-## 25                                               Bolivia  0.274752629
-## 26                                Bosnia and Herzegovina           NA
-## 27                                              Botswana           NA
-## 28                                                Brazil  0.649885938
-## 29                                British Virgin Islands           NA
-## 30                                     Brunei Darussalam  4.084318621
-## 31                                              Bulgaria  2.833901121
-## 32                                          Burkina Faso  0.009111902
-## 33                                               Burundi           NA
-## 34                                            Cabo Verde  0.109047654
-## 35                                              Cambodia  0.041012378
-## 36                                              Cameroon  0.052416901
-## 37                                                Canada 10.770847287
-## 38                                Caribbean small states  1.401336684
-## 39                                        Cayman Islands  1.398728544
-## 40                              Central African Republic  0.058606829
-## 41                        Central Europe and the Baltics  5.104205752
-## 42                                                  Chad  0.018325172
-## 43                                       Channel Islands           NA
-## 44                                                 Chile  1.658786375
-## 45                                                 China  1.170381372
-## 46                                              Colombia  1.021927205
-## 47                                               Comoros  0.057560394
-## 48                                      Congo, Dem. Rep.  0.152228016
-## 49                                           Congo, Rep.  0.219677231
-## 50                                            Costa Rica  0.369240041
-## 51                                         Cote d&#39;Ivoire  0.131878125
-## 52                                               Croatia           NA
-## 53                                                  Cuba  1.918419324
-## 54                                               Curacao           NA
-## 55                                                Cyprus  1.548904753
-## 56                                        Czech Republic           NA
-## 57                                               Denmark  6.502683093
-## 58                                              Djibouti  0.482292314
-## 59                                              Dominica  0.183316392
-## 60                                    Dominican Republic  0.316137579
-## 61                            Early-demographic dividend  0.594012982
-## 62                                   East Asia &amp; Pacific  1.162459682
-## 63           East Asia &amp; Pacific (excluding high income)  0.952973838
-## 64            East Asia &amp; Pacific (IDA &amp; IBRD countries)  0.951089322
-## 65                                               Ecuador  0.388194687
-## 66                                      Egypt, Arab Rep.  0.602793147
-## 67                                           El Salvador  0.224024012
-## 68                                     Equatorial Guinea  0.086169825
-## 69                                               Eritrea           NA
-## 70                                               Estonia           NA
-## 71                                              Eswatini  0.098053081
-## 72                                              Ethiopia  0.015892176
-## 73                                             Euro area           NA
-## 74                                 Europe &amp; Central Asia           NA
-## 75         Europe &amp; Central Asia (excluding high income)           NA
-## 76          Europe &amp; Central Asia (IDA &amp; IBRD countries)           NA
-## 77                                        European Union  5.764866501
-## 78                                         Faroe Islands  1.694987722
-## 79                                                  Fiji  0.493927280
-## 80                                               Finland  3.409846728
-## 81              Fragile and conflict affected situations  0.282425584
-## 82                                                France  5.817437681
-## 83                                      French Polynesia  0.469670577
-## 84                                                 Gabon  0.263534879
-## 85                                           Gambia, The  0.050226409
-## 86                                               Georgia           NA
-## 87                                               Germany           NA
-## 88                                                 Ghana  0.220509764
-## 89                                             Gibraltar  2.035482494
-## 90                                                Greece  1.128920482
-## 91                                             Greenland  6.882676923
-## 92                                               Grenada  0.244651514
-## 93                                                  Guam           NA
-## 94                                             Guatemala  0.319608136
-## 95                                                Guinea  0.117540057
-## 96                                         Guinea-Bissau  0.029758040
-## 97                                                Guyana  1.154316313
-## 98                                                 Haiti  0.073981955
-## 99                Heavily indebted poor countries (HIPC)  0.122136483
-## 100                                          High income  7.515669385
-## 101                                             Honduras  0.302190881
-## 102                                 Hong Kong SAR, China  0.960982311
-## 103                                              Hungary  4.544465241
-## 104                                            IBRD only  1.333118193
-## 105                                              Iceland  6.913193297
-## 106                                     IDA &amp; IBRD total  1.150853303
-## 107                                            IDA blend  0.372135419
-## 108                                             IDA only  0.137711354
-## 109                                            IDA total  0.222613405
-## 110                                                India  0.267634185
-## 111                                            Indonesia  0.243920439
-## 112                                   Iran, Islamic Rep.  1.706876605
-## 113                                                 Iraq  1.133839523
-## 114                                              Ireland  3.952726791
-## 115                                          Isle of Man           NA
-## 116                                               Israel  3.059851846
-## 117                                                Italy  2.178444772
-## 118                                              Jamaica  0.902946847
-## 119                                                Japan  2.516537519
-## 120                                               Jordan  0.797770233
-## 121                                           Kazakhstan           NA
-## 122                                                Kenya  0.298956907
-## 123                                             Kiribati           NA
-## 124                            Korea, Dem. People’s Rep.           NA
-## 125                                          Korea, Rep.  0.501837251
-## 126                                               Kosovo           NA
-## 127                                               Kuwait 29.005705705
-## 128                                      Kyrgyz Republic           NA
-## 129                                              Lao PDR  0.038037661
-## 130                            Late-demographic dividend  1.798429418
-## 131                            Latin America &amp; Caribbean  1.324430298
-## 132    Latin America &amp; Caribbean (excluding high income)  1.296989937
-## 133 Latin America &amp; the Caribbean (IDA &amp; IBRD countries)  1.299146846
-## 134                                               Latvia           NA
-## 135         Least developed countries: UN classification  0.102717784
-## 136                                              Lebanon  1.430278330
-## 137                                              Lesotho           NA
-## 138                                              Liberia  0.147511704
-## 139                                                Libya  0.478496869
-## 140                                        Liechtenstein           NA
-## 141                                            Lithuania           NA
-## 142                                  Low &amp; middle income  1.052959482
-## 143                                           Low income  0.192492812
-## 144                                  Lower middle income  0.375556219
-## 145                                           Luxembourg 36.685183298
-## 146                                     Macao SAR, China  0.305963967
-## 147                                           Madagascar  0.078382774
-## 148                                               Malawi           NA
-## 149                                             Malaysia           NA
-## 150                                             Maldives           NA
-## 151                                                 Mali  0.022989578
-## 152                                                Malta  1.044345429
-## 153                                     Marshall Islands           NA
-## 154                                           Mauritania  0.043121696
-## 155                                            Mauritius  0.272514943
-## 156                                               Mexico  1.670990141
-## 157                                Micronesia, Fed. Sts.           NA
-## 158                           Middle East &amp; North Africa  0.971951787
-## 159   Middle East &amp; North Africa (excluding high income)  0.863165099
-## 160    Middle East &amp; North Africa (IDA &amp; IBRD countries)  0.862685005
-## 161                                        Middle income  1.116829817
-## 162                                              Moldova           NA
-## 163                                               Monaco           NA
-## 164                                             Mongolia  1.354729698
-## 165                                           Montenegro           NA
-## 166                                              Morocco  0.295358036
-## 167                                           Mozambique  0.262334358
-## 168                                              Myanmar  0.125005946
-## 169                                              Namibia           NA
-## 170                                                Nauru           NA
-## 171                                                Nepal  0.007983533
-## 172                                          Netherlands  6.399179620
-## 173                                        New Caledonia 10.908164557
-## 174                                          New Zealand  4.867069736
-## 175                                            Nicaragua  0.299873839
-## 176                                                Niger  0.008656844
-## 177                                              Nigeria  0.075470965
-## 178                                        North America 15.525528798
-## 179                                      North Macedonia           NA
-## 180                             Northern Mariana Islands           NA
-## 181                                               Norway  3.658563698
-## 182                                       Not classified           NA
-## 183                                         OECD members  7.263434812
-## 184                                                 Oman           NA
-## 185                                   Other small states  0.630833328
-## 186                          Pacific island small states  0.376362636
-## 187                                             Pakistan  0.314626187
-## 188                                                Palau  1.501176952
-## 189                                               Panama  0.880341254
-## 190                                     Papua New Guinea  0.079651698
-## 191                                             Paraguay  0.159854978
-## 192                                                 Peru  0.804897186
-## 193                                          Philippines  0.317288748
-## 194                                               Poland  6.740362582
-## 195                                             Portugal  0.928578089
-## 196                            Post-demographic dividend  7.732479659
-## 197                             Pre-demographic dividend  0.157044298
-## 198                                          Puerto Rico           NA
-## 199                                                Qatar  3.714671619
-## 200                                              Romania  2.903812021
-## 201                                   Russian Federation           NA
-## 202                                               Rwanda  0.036225525
-## 203                                                Samoa  0.135028399
-## 204                                           San Marino           NA
-## 205                                Sao Tome and Principe  0.171083326
-## 206                                         Saudi Arabia  0.655055537
-## 207                                              Senegal  0.258436816
-## 208                                               Serbia           NA
-## 209                                           Seychelles           NA
-## 210                                         Sierra Leone  0.308532056
-## 211                                            Singapore  0.846367833
-## 212                            Sint Maarten (Dutch part)           NA
-## 213                                      Slovak Republic           NA
-## 214                                             Slovenia           NA
-## 215                                         Small states  0.918155250
-## 216                                      Solomon Islands  0.093348268
-## 217                                              Somalia  0.030602996
-## 218                                         South Africa  5.727221366
-## 219                                           South Asia  0.243502213
-## 220                              South Asia (IDA &amp; IBRD)  0.243502213
-## 221                                          South Sudan           NA
-## 222                                                Spain  1.606592711
-## 223                                            Sri Lanka  0.228758670
-## 224                                  St. Kitts and Nevis  0.214884266
-## 225                                            St. Lucia  0.163528323
-## 226                             St. Martin (French part)           NA
-## 227                       St. Vincent and the Grenadines  0.135853390
-## 228                                   Sub-Saharan Africa  0.554878406
-## 229           Sub-Saharan Africa (excluding high income)  0.554956728
-## 230            Sub-Saharan Africa (IDA &amp; IBRD countries)  0.554878406
-## 231                                                Sudan  0.129783714
-## 232                                             Suriname  1.503124663
-## 233                                               Sweden  6.576406584
-## 234                                          Switzerland  3.664365979
-## 235                                 Syrian Arab Republic  0.704774143
-## 236                                           Tajikistan           NA
-## 237                                             Tanzania  0.082444237
-## 238                                             Thailand  0.135585755
-## 239                                          Timor-Leste           NA
-## 240                                                 Togo  0.041762390
-## 241                                                Tonga  0.178654368
-## 242                                  Trinidad and Tobago  3.044377278
-## 243                                              Tunisia  0.413369901
-## 244                                               Turkey  0.612271322
-## 245                                         Turkmenistan           NA
-## 246                             Turks and Caicos Islands           NA
-## 247                                               Tuvalu           NA
-## 248                                               Uganda  0.062316991
-## 249                                              Ukraine           NA
-## 250                                 United Arab Emirates  0.119035253
-## 251                                       United Kingdom 11.150759160
-## 252                                        United States 15.999779157
-## 253                                  Upper middle income  1.689062034
-## 254                                              Uruguay  1.701588605
-## 255                                           Uzbekistan           NA
-## 256                                              Vanuatu           NA
-## 257                                        Venezuela, RB  7.009412368
-## 258                                              Vietnam  0.229313500
-## 259                                Virgin Islands (U.S.)           NA
-## 260                                   West Bank and Gaza           NA
-## 261                                                World  3.099156966
-## 262                                          Yemen, Rep.  0.683679077
-## 263                                               Zambia           NA
-## 264                                             Zimbabwe           NA
-##          2000.x       1960.y       2000.y
-## 1    0.03723478 5.377778e+08           NA
-## 2    0.97817468           NA 3.480355e+09
-## 3    2.83037996 2.723649e+09 5.479025e+10
-## 4            NA           NA           NA
-## 5    8.01928429           NA 1.434430e+09
-## 6    0.58196150           NA 9.129595e+09
-## 7    4.53454536           NA 8.301588e+08
-## 8    3.70385708           NA 7.351881e+11
-## 9    3.85499195           NA 2.842038e+11
-## 10   1.12891750           NA 1.911564e+09
-## 11  26.19487524           NA 1.873453e+09
-## 12  17.20060983 1.857767e+10 4.152226e+11
-## 13   7.77425974 6.592694e+09 1.967998e+11
-## 14   3.66627103           NA 5.272617e+09
-## 15   5.59798491 1.698039e+08 8.076470e+09
-## 16  28.05103737           NA 9.062907e+09
-## 17   0.21831168 4.274894e+09 5.336979e+10
-## 18   4.37584664           NA 3.121500e+09
-## 19   5.38974529           NA 1.273686e+10
-## 20  11.22966770 1.165872e+10 2.379049e+11
-## 21   1.60134242 2.807189e+07 8.320725e+08
-## 22   0.23286097 2.261956e+08 2.569187e+09
-## 23   8.36199117 8.446665e+07 3.480219e+09
-## 24   0.67008786           NA 4.391582e+08
-## 25   1.31464231 3.738794e+08 8.397913e+09
-## 26   3.67562599           NA 5.505888e+09
-## 27   2.30061387 3.041231e+07 5.788330e+09
-## 28   1.87644131 1.516557e+10 6.554206e+11
-## 29   5.05519177           NA           NA
-## 30  14.14342743           NA 6.001153e+09
-## 31   5.32803434           NA 1.315302e+10
-## 32   0.08971685 3.304428e+08 2.628920e+09
-## 33   0.04254013 1.960000e+08 8.704861e+08
-## 34   0.50527572           NA 5.392273e+08
-## 35   0.16260585 6.371429e+08 3.677898e+09
-## 36   0.22124044 6.187410e+08 1.008394e+10
-## 37  17.41463895 4.109345e+10 7.422955e+11
-## 38   6.52388023 1.875462e+09 3.417785e+10
-## 39  11.00888826           NA           NA
-## 40   0.07353286 1.121556e+08 9.145003e+08
-## 41   6.60384328           NA 4.276465e+11
-## 42   0.02106550 3.135827e+08 1.385058e+09
-## 43           NA           NA 6.439703e+09
-## 44   3.83350670 4.110000e+09 7.786093e+10
-## 45   2.69686243 5.971647e+10 1.211347e+12
-## 46   1.46161945 4.031153e+09 9.988658e+10
-## 47   0.18931442           NA 3.502643e+08
-## 48   0.01728181 3.359404e+09 1.908805e+10
-## 49   0.33534511 1.317319e+08 3.219911e+09
-## 50   1.38170545 5.075138e+08 1.494951e+10
-## 51   0.41272689 5.462036e+08 1.071702e+10
-## 52   4.32821192           NA 2.177427e+10
-## 53   2.34427134           NA 3.056540e+10
-## 54           NA           NA           NA
-## 55   7.34729511           NA 9.985844e+09
-## 56  12.07688904           NA 6.164949e+10
-## 57   9.61317555 6.248947e+09 1.641588e+11
-## 58   0.47524889           NA 5.512309e+08
-## 59   1.47417085           NA 3.334689e+08
-## 60   2.33621167 6.723997e+08 2.430512e+10
-## 61   1.71327974 1.527245e+11 3.295338e+12
-## 62   3.19758951 1.532593e+11 8.281309e+12
-## 63   2.31068209 8.025456e+10 1.735179e+12
-## 64   2.30151418 8.008904e+10 1.731601e+12
-## 65   1.63381035 2.069465e+09 1.832776e+10
-## 66   2.05321771           NA 9.983854e+10
-## 67   0.97530306           NA 1.178493e+10
-## 68   0.75011919           NA 1.045998e+09
-## 69   0.26553732           NA 7.063708e+08
-## 70  10.63625164           NA 5.685775e+09
-## 71   1.18168554 3.507616e+07 1.738101e+09
-## 72   0.05360010           NA 8.242392e+09
-## 73   8.20701362 2.454598e+11 6.484574e+12
-## 74   7.60697685 4.348120e+11 1.002298e+13
-## 75   6.86544426           NA 6.979444e+11
-## 76   6.92328804           NA 8.916048e+11
-## 77   8.01273159 3.590204e+11 8.910187e+12
-## 78  14.75117150           NA 1.058703e+09
-## 79   1.03995531 1.123284e+08 1.684110e+09
-## 80  10.12847414 5.224102e+09 1.255399e+11
-## 81   0.76879192           NA 2.198017e+11
-## 82   5.94666546 6.265147e+10 1.362249e+12
-## 83   2.36152082           NA 3.447543e+09
-## 84   3.82115992 1.414690e+08 5.067865e+09
-## 85   0.18645249           NA 7.829154e+08
-## 86   1.11256641           NA 3.057425e+09
-## 87  10.09563988           NA 1.949954e+12
-## 88   0.32620737 1.217230e+09 4.983024e+09
-## 89  10.73774817           NA           NA
-## 90   8.47843382 4.446528e+09 1.301338e+11
-## 91   9.46112100           NA 1.068031e+09
-## 92   1.85430747           NA 5.200444e+08
-## 93           NA           NA           NA
-## 94   0.85106744 1.043600e+09 1.928883e+10
-## 95   0.19935321           NA 2.995361e+09
-## 96   0.12210096           NA 3.701738e+08
-## 97   2.15586000 1.702152e+08 7.126679e+08
-## 98   0.16160472 2.731872e+08 3.953846e+09
-## 99   0.16337745 1.738581e+10 1.624449e+11
-## 100 12.21457695 1.057277e+12 2.758556e+13
-## 101  0.76524711 3.356500e+08 7.103508e+09
-## 102  6.06746827 1.320797e+09 1.716682e+11
-## 103  5.46729669           NA 4.731062e+10
-## 104  2.63928045 3.033712e+11 5.804803e+12
-## 105  7.69378212 2.484341e+08 9.003639e+09
-## 106  2.18107372 3.402852e+11 6.262975e+12
-## 107  0.95251793 1.227635e+10 2.005546e+11
-## 108  0.25924227 2.683651e+10 2.581898e+11
-## 109  0.49587337 3.813299e+10 4.602819e+11
-## 110  0.97660169 3.702988e+10 4.683949e+11
-## 111  1.24539825           NA 1.650210e+11
-## 112  5.67232331 4.199134e+09 1.095917e+11
-## 113  3.08309352 1.684122e+09           NA
-## 114 10.83474264 1.939330e+09 9.985296e+10
-## 115          NA           NA 1.563668e+09
-## 116  9.58177946 2.598500e+09 1.322437e+11
-## 117  7.91267317 4.038529e+10 1.141760e+12
-## 118  3.88289943 6.990507e+08 8.985353e+09
-## 119  9.62235162 4.430734e+10 4.887520e+12
-## 120  3.02738198           NA 8.460424e+09
-## 121  7.93485418           NA 1.829199e+10
-## 122  0.32592183 7.912655e+08 1.270536e+10
-## 123  0.34759941           NA 6.725417e+07
-## 124  3.03815130           NA           NA
-## 125  9.52093176 3.957240e+09 5.616331e+11
-## 126          NA           NA 1.849196e+09
-## 127 26.18923263           NA 3.771186e+10
-## 128  0.94624530           NA 1.369693e+09
-## 129  0.17633450           NA 1.731198e+09
-## 130  3.40308749 1.831254e+11 3.402211e+12
-## 131  2.60516470 8.156590e+10 2.286931e+12
-## 132  2.50912168 7.315152e+10 2.082505e+12
-## 133  2.58475224 7.670230e+10 2.174346e+12
-## 134  2.68262296           NA 7.937759e+09
-## 135  0.16890457           NA 2.127406e+11
-## 136  3.96780298           NA 1.726036e+10
-## 137  0.91097568 3.457931e+07 8.872953e+08
-## 138  0.14804687           NA 8.740000e+08
-## 139  8.79331364           NA 3.827021e+10
-## 140          NA           NA 2.483953e+09
-## 141  3.47572907           NA 1.153921e+10
-## 142  2.13059566 3.301125e+11 5.985798e+12
-## 143  0.39048037           NA 1.379770e+11
-## 144  1.05069498           NA 1.292547e+12
-## 145 18.88551226 7.039257e+08 2.126351e+10
-## 146  3.81459482           NA 6.720492e+09
-## 147  0.11884696 6.730817e+08 3.877674e+09
-## 148  0.07795299 1.629567e+08 1.743507e+09
-## 149  5.42091501 1.916242e+09 9.378974e+10
-## 150  1.61433153           NA 6.243371e+08
-## 151  0.07503879           NA 2.954130e+09
-## 152  5.29246296           NA 4.306192e+09
-## 153  1.51728962           NA 1.109377e+08
-## 154  0.44613776 9.260924e+07 1.293654e+09
-## 155  2.26778939           NA 4.663314e+09
-## 156  4.02814463 1.304000e+10 7.079067e+11
-## 157  1.16085362           NA 2.332263e+08
-## 158  4.67145163           NA 9.669405e+11
-## 159  3.12368988           NA 4.516736e+11
-## 160  3.15385309           NA 4.473114e+11
-## 161  2.29646366 3.168014e+11 5.850970e+12
-## 162  0.96521423           NA 1.288429e+09
-## 163          NA           NA 2.647884e+09
-## 164  3.13101387           NA 1.136896e+09
-## 165          NA           NA 9.842976e+08
-## 166  1.17751823 2.037151e+09 3.885725e+10
-## 167  0.07618911           NA 5.016469e+09
-## 168  0.21592426           NA 8.905066e+09
-## 169  0.91543661           NA 3.833994e+09
-## 170  8.15913708           NA           NA
-## 171  0.12820120 5.083344e+08 5.494252e+09
-## 172 10.89472628 1.227673e+10 4.164428e+11
-## 173 10.47321202           NA 2.682347e+09
-## 174  8.54939420 5.485855e+09 5.262328e+10
-## 175  0.74218147 2.238547e+08 5.107329e+09
-## 176  0.06148581 4.495269e+08 1.798374e+09
-## 177  0.62197295 4.196092e+09 6.944876e+10
-## 178 19.90535096 5.844779e+11 1.099812e+13
-## 179  5.92899418           NA 3.772851e+09
-## 180          NA           NA           NA
-## 181  8.83401570 5.163272e+09 1.713156e+11
-## 182          NA           NA           NA
-## 183 11.08021443 1.066724e+12 2.737872e+13
-## 184  9.65428469           NA 1.950741e+10
-## 185  5.03228355           NA 9.170470e+10
-## 186  0.96231908           NA 3.444111e+09
-## 187  0.74783383 3.707056e+09 7.395237e+10
-## 188 13.05187124           NA 1.447595e+08
-## 189  1.91074795 5.371471e+08 1.230412e+10
-## 190  0.45589907 2.304960e+08 3.521340e+09
-## 191  0.69300445           NA 8.855705e+09
-## 192  1.14500446 2.571908e+09 5.174475e+10
-## 193  0.93993265 6.684569e+09 8.102630e+10
-## 194  7.82279833           NA 1.718861e+11
-## 195  6.09640339 3.193200e+09 1.183585e+11
-## 196 12.01487813 1.039828e+12 2.626197e+13
-## 197  0.39159877 1.109875e+10 2.405395e+11
-## 198          NA 1.691900e+09 6.170180e+10
-## 199 58.61946468           NA 1.775989e+10
-## 200  4.04051866           NA 3.725326e+10
-## 201 10.62712053           NA 2.597101e+11
-## 202  0.06655776 1.190000e+08 1.813939e+09
-## 203  0.81977484           NA 2.690197e+08
-## 204          NA           NA 1.101898e+09
-## 205  0.33509300           NA           NA
-## 206 14.36980164           NA 1.895149e+11
-## 207  0.40196621 1.003692e+09 5.924240e+09
-## 208          NA           NA 6.540246e+09
-## 209  7.05096695 1.201203e+07 6.148798e+08
-## 210  0.09278338 3.220095e+08 6.358740e+08
-## 211 12.16662434 7.047563e+08 9.607448e+10
-## 212          NA           NA           NA
-## 213  6.65932949           NA 2.911488e+10
-## 214  7.23840366           NA 2.034220e+10
-## 215  5.09336993           NA 1.293223e+11
-## 216  0.36433626           NA 4.351039e+08
-## 217  0.05414374           NA           NA
-## 218  8.42082992 7.575248e+09 1.363619e+11
-## 219  0.84913455 4.713339e+10 6.223723e+11
-## 220  0.84913455 4.713339e+10 6.223723e+11
-## 221          NA           NA           NA
-## 222  7.25782435 1.207213e+10 5.954026e+11
-## 223  0.54523813 1.409874e+09 1.633081e+10
-## 224  3.91044607 1.236656e+07 4.335205e+08
-## 225  2.10573665           NA 8.343273e+08
-## 226          NA           NA           NA
-## 227  1.36086989 1.306656e+07 3.962614e+08
-## 228  0.84849423 2.980471e+10 3.968111e+11
-## 229  0.84773618 2.979350e+10 3.961921e+11
-## 230  0.84849423 2.980471e+10 3.968111e+11
-## 231  0.15913371 1.307333e+09 1.225742e+10
-## 232  4.66405704 9.965000e+07 9.476720e+08
-## 233  5.56243008 1.484287e+10 2.601587e+11
-## 234  5.43548498 9.522747e+09 2.720555e+11
-## 235  3.11019717 8.577044e+08 1.932589e+10
-## 236  0.35983708           NA 8.605211e+08
-## 237  0.07914346           NA 1.337598e+10
-## 238  2.87947901 2.760747e+09 1.263923e+11
-## 239          NA           NA 4.396461e+08
-## 240  0.27626847 1.211281e+08 1.488186e+09
-## 241  0.97314566           NA 2.023635e+08
-## 242 18.81317173 5.356701e+08 8.154338e+09
-## 243  2.05213152           NA 2.147319e+10
-## 244  3.41794200 1.399507e+10 2.729794e+11
-## 245  8.31221733           NA 2.904663e+09
-## 246  3.45531641           NA           NA
-## 247  0.78071109           NA 1.374206e+07
-## 248  0.06047017 4.230084e+08 6.193247e+09
-## 249  6.52561878           NA 3.126153e+10
-## 250 35.91576427           NA 1.043374e+11
-## 251  9.19954923 7.232805e+10 1.648269e+12
-## 252 20.17875051 5.433000e+11 1.025235e+13
-## 253  3.52213738 2.284493e+11 4.558739e+12
-## 254  1.59836475 1.242289e+09 2.282326e+10
-## 255  4.94226224           NA 1.376051e+10
-## 256  0.45596631           NA 2.720147e+08
-## 257  6.30041799 7.779091e+09 1.171407e+11
-## 258  0.67130855           NA 3.117252e+10
-## 259          NA           NA           NA
-## 260  0.27105768           NA 4.313600e+09
-## 261  4.03752633 1.367630e+12 3.358157e+13
-## 262  0.84107476           NA 9.652436e+09
-## 263  0.17497204 7.130000e+08 3.600683e+09
-## 264  1.17187442 1.052990e+09 6.689958e+09</code></pre>
+<pre><code>##                                             Country Name      2000.x
+## 1                                            Afghanistan  0.03723478
+## 2                                                Albania  0.97817468
+## 3                                                Algeria  2.83037996
+## 4                                         American Samoa          NA
+## 5                                                Andorra  8.01928429
+## 6                                                 Angola  0.58196150
+## 7                                    Antigua and Barbuda  4.53454536
+## 8                                             Arab World  3.70385708
+## 9                                              Argentina  3.85499195
+## 10                                               Armenia  1.12891750
+## 11                                                 Aruba 26.19487524
+## 12                                             Australia 17.20060983
+## 13                                               Austria  7.77425974
+## 14                                            Azerbaijan  3.66627103
+## 15                                          Bahamas, The  5.59798491
+## 16                                               Bahrain 28.05103737
+## 17                                            Bangladesh  0.21831168
+## 18                                              Barbados  4.37584664
+## 19                                               Belarus  5.38974529
+## 20                                               Belgium 11.22966770
+## 21                                                Belize  1.60134242
+## 22                                                 Benin  0.23286097
+## 23                                               Bermuda  8.36199117
+## 24                                                Bhutan  0.67008786
+## 25                                               Bolivia  1.31464231
+## 26                                Bosnia and Herzegovina  3.67562599
+## 27                                              Botswana  2.30061387
+## 28                                                Brazil  1.87644131
+## 29                                British Virgin Islands  5.05519177
+## 30                                     Brunei Darussalam 14.14342743
+## 31                                              Bulgaria  5.32803434
+## 32                                          Burkina Faso  0.08971685
+## 33                                               Burundi  0.04254013
+## 34                                            Cabo Verde  0.50527572
+## 35                                              Cambodia  0.16260585
+## 36                                              Cameroon  0.22124044
+## 37                                                Canada 17.41463895
+## 38                                Caribbean small states  6.52388023
+## 39                                        Cayman Islands 11.00888826
+## 40                              Central African Republic  0.07353286
+## 41                        Central Europe and the Baltics  6.60384328
+## 42                                                  Chad  0.02106550
+## 43                                       Channel Islands          NA
+## 44                                                 Chile  3.83350670
+## 45                                                 China  2.69686243
+## 46                                              Colombia  1.46161945
+## 47                                               Comoros  0.18931442
+## 48                                      Congo, Dem. Rep.  0.01728181
+## 49                                           Congo, Rep.  0.33534511
+## 50                                            Costa Rica  1.38170545
+## 51                                         Cote d&#39;Ivoire  0.41272689
+## 52                                               Croatia  4.32821192
+## 53                                                  Cuba  2.34427134
+## 54                                               Curacao          NA
+## 55                                                Cyprus  7.34729511
+## 56                                        Czech Republic 12.07688904
+## 57                                               Denmark  9.61317555
+## 58                                              Djibouti  0.47524889
+## 59                                              Dominica  1.47417085
+## 60                                    Dominican Republic  2.33621167
+## 61                            Early-demographic dividend  1.71327974
+## 62                                   East Asia &amp; Pacific  3.19758951
+## 63           East Asia &amp; Pacific (excluding high income)  2.31068209
+## 64            East Asia &amp; Pacific (IDA &amp; IBRD countries)  2.30151418
+## 65                                               Ecuador  1.63381035
+## 66                                      Egypt, Arab Rep.  2.05321771
+## 67                                           El Salvador  0.97530306
+## 68                                     Equatorial Guinea  0.75011919
+## 69                                               Eritrea  0.26553732
+## 70                                               Estonia 10.63625164
+## 71                                              Eswatini  1.18168554
+## 72                                              Ethiopia  0.05360010
+## 73                                             Euro area  8.20701362
+## 74                                 Europe &amp; Central Asia  7.60697685
+## 75         Europe &amp; Central Asia (excluding high income)  6.86544426
+## 76          Europe &amp; Central Asia (IDA &amp; IBRD countries)  6.92328804
+## 77                                        European Union  8.01273159
+## 78                                         Faroe Islands 14.75117150
+## 79                                                  Fiji  1.03995531
+## 80                                               Finland 10.12847414
+## 81              Fragile and conflict affected situations  0.76879192
+## 82                                                France  5.94666546
+## 83                                      French Polynesia  2.36152082
+## 84                                                 Gabon  3.82115992
+## 85                                           Gambia, The  0.18645249
+## 86                                               Georgia  1.11256641
+## 87                                               Germany 10.09563988
+## 88                                                 Ghana  0.32620737
+## 89                                             Gibraltar 10.73774817
+## 90                                                Greece  8.47843382
+## 91                                             Greenland  9.46112100
+## 92                                               Grenada  1.85430747
+## 93                                                  Guam          NA
+## 94                                             Guatemala  0.85106744
+## 95                                                Guinea  0.19935321
+## 96                                         Guinea-Bissau  0.12210096
+## 97                                                Guyana  2.15586000
+## 98                                                 Haiti  0.16160472
+## 99                Heavily indebted poor countries (HIPC)  0.16337745
+## 100                                          High income 12.21457695
+## 101                                             Honduras  0.76524711
+## 102                                 Hong Kong SAR, China  6.06746827
+## 103                                              Hungary  5.46729669
+## 104                                            IBRD only  2.63928045
+## 105                                              Iceland  7.69378212
+## 106                                     IDA &amp; IBRD total  2.18107372
+## 107                                            IDA blend  0.95251793
+## 108                                             IDA only  0.25924227
+## 109                                            IDA total  0.49587337
+## 110                                                India  0.97660169
+## 111                                            Indonesia  1.24539825
+## 112                                   Iran, Islamic Rep.  5.67232331
+## 113                                                 Iraq  3.08309352
+## 114                                              Ireland 10.83474264
+## 115                                          Isle of Man          NA
+## 116                                               Israel  9.58177946
+## 117                                                Italy  7.91267317
+## 118                                              Jamaica  3.88289943
+## 119                                                Japan  9.62235162
+## 120                                               Jordan  3.02738198
+## 121                                           Kazakhstan  7.93485418
+## 122                                                Kenya  0.32592183
+## 123                                             Kiribati  0.34759941
+## 124                            Korea, Dem. People’s Rep.  3.03815130
+## 125                                          Korea, Rep.  9.52093176
+## 126                                               Kosovo          NA
+## 127                                               Kuwait 26.18923263
+## 128                                      Kyrgyz Republic  0.94624530
+## 129                                              Lao PDR  0.17633450
+## 130                            Late-demographic dividend  3.40308749
+## 131                            Latin America &amp; Caribbean  2.60516470
+## 132    Latin America &amp; Caribbean (excluding high income)  2.50912168
+## 133 Latin America &amp; the Caribbean (IDA &amp; IBRD countries)  2.58475224
+## 134                                               Latvia  2.68262296
+## 135         Least developed countries: UN classification  0.16890457
+## 136                                              Lebanon  3.96780298
+## 137                                              Lesotho  0.91097568
+## 138                                              Liberia  0.14804687
+## 139                                                Libya  8.79331364
+## 140                                        Liechtenstein          NA
+## 141                                            Lithuania  3.47572907
+## 142                                  Low &amp; middle income  2.13059566
+## 143                                           Low income  0.39048037
+## 144                                  Lower middle income  1.05069498
+## 145                                           Luxembourg 18.88551226
+## 146                                     Macao SAR, China  3.81459482
+## 147                                           Madagascar  0.11884696
+## 148                                               Malawi  0.07795299
+## 149                                             Malaysia  5.42091501
+## 150                                             Maldives  1.61433153
+## 151                                                 Mali  0.07503879
+## 152                                                Malta  5.29246296
+## 153                                     Marshall Islands  1.51728962
+## 154                                           Mauritania  0.44613776
+## 155                                            Mauritius  2.26778939
+## 156                                               Mexico  4.02814463
+## 157                                Micronesia, Fed. Sts.  1.16085362
+## 158                           Middle East &amp; North Africa  4.67145163
+## 159   Middle East &amp; North Africa (excluding high income)  3.12368988
+## 160    Middle East &amp; North Africa (IDA &amp; IBRD countries)  3.15385309
+## 161                                        Middle income  2.29646366
+## 162                                              Moldova  0.96521423
+## 163                                               Monaco          NA
+## 164                                             Mongolia  3.13101387
+## 165                                           Montenegro          NA
+## 166                                              Morocco  1.17751823
+## 167                                           Mozambique  0.07618911
+## 168                                              Myanmar  0.21592426
+## 169                                              Namibia  0.91543661
+## 170                                                Nauru  8.15913708
+## 171                                                Nepal  0.12820120
+## 172                                          Netherlands 10.89472628
+## 173                                        New Caledonia 10.47321202
+## 174                                          New Zealand  8.54939420
+## 175                                            Nicaragua  0.74218147
+## 176                                                Niger  0.06148581
+## 177                                              Nigeria  0.62197295
+## 178                                        North America 19.90535096
+## 179                                      North Macedonia  5.92899418
+## 180                             Northern Mariana Islands          NA
+## 181                                               Norway  8.83401570
+## 182                                       Not classified          NA
+## 183                                         OECD members 11.08021443
+## 184                                                 Oman  9.65428469
+## 185                                   Other small states  5.03228355
+## 186                          Pacific island small states  0.96231908
+## 187                                             Pakistan  0.74783383
+## 188                                                Palau 13.05187124
+## 189                                               Panama  1.91074795
+## 190                                     Papua New Guinea  0.45589907
+## 191                                             Paraguay  0.69300445
+## 192                                                 Peru  1.14500446
+## 193                                          Philippines  0.93993265
+## 194                                               Poland  7.82279833
+## 195                                             Portugal  6.09640339
+## 196                            Post-demographic dividend 12.01487813
+## 197                             Pre-demographic dividend  0.39159877
+## 198                                          Puerto Rico          NA
+## 199                                                Qatar 58.61946468
+## 200                                              Romania  4.04051866
+## 201                                   Russian Federation 10.62712053
+## 202                                               Rwanda  0.06655776
+## 203                                                Samoa  0.81977484
+## 204                                           San Marino          NA
+## 205                                Sao Tome and Principe  0.33509300
+## 206                                         Saudi Arabia 14.36980164
+## 207                                              Senegal  0.40196621
+## 208                                               Serbia          NA
+## 209                                           Seychelles  7.05096695
+## 210                                         Sierra Leone  0.09278338
+## 211                                            Singapore 12.16662434
+## 212                            Sint Maarten (Dutch part)          NA
+## 213                                      Slovak Republic  6.65932949
+## 214                                             Slovenia  7.23840366
+## 215                                         Small states  5.09336993
+## 216                                      Solomon Islands  0.36433626
+## 217                                              Somalia  0.05414374
+## 218                                         South Africa  8.42082992
+## 219                                           South Asia  0.84913455
+## 220                              South Asia (IDA &amp; IBRD)  0.84913455
+## 221                                          South Sudan          NA
+## 222                                                Spain  7.25782435
+## 223                                            Sri Lanka  0.54523813
+## 224                                  St. Kitts and Nevis  3.91044607
+## 225                                            St. Lucia  2.10573665
+## 226                             St. Martin (French part)          NA
+## 227                       St. Vincent and the Grenadines  1.36086989
+## 228                                   Sub-Saharan Africa  0.84849423
+## 229           Sub-Saharan Africa (excluding high income)  0.84773618
+## 230            Sub-Saharan Africa (IDA &amp; IBRD countries)  0.84849423
+## 231                                                Sudan  0.15913371
+## 232                                             Suriname  4.66405704
+## 233                                               Sweden  5.56243008
+## 234                                          Switzerland  5.43548498
+## 235                                 Syrian Arab Republic  3.11019717
+## 236                                           Tajikistan  0.35983708
+## 237                                             Tanzania  0.07914346
+## 238                                             Thailand  2.87947901
+## 239                                          Timor-Leste          NA
+## 240                                                 Togo  0.27626847
+## 241                                                Tonga  0.97314566
+## 242                                  Trinidad and Tobago 18.81317173
+## 243                                              Tunisia  2.05213152
+## 244                                               Turkey  3.41794200
+## 245                                         Turkmenistan  8.31221733
+## 246                             Turks and Caicos Islands  3.45531641
+## 247                                               Tuvalu  0.78071109
+## 248                                               Uganda  0.06047017
+## 249                                              Ukraine  6.52561878
+## 250                                 United Arab Emirates 35.91576427
+## 251                                       United Kingdom  9.19954923
+## 252                                        United States 20.17875051
+## 253                                  Upper middle income  3.52213738
+## 254                                              Uruguay  1.59836475
+## 255                                           Uzbekistan  4.94226224
+## 256                                              Vanuatu  0.45596631
+## 257                                        Venezuela, RB  6.30041799
+## 258                                              Vietnam  0.67130855
+## 259                                Virgin Islands (U.S.)          NA
+## 260                                   West Bank and Gaza  0.27105768
+## 261                                                World  4.03752633
+## 262                                          Yemen, Rep.  0.84107476
+## 263                                               Zambia  0.17497204
+## 264                                             Zimbabwe  1.17187442
+##           2000.y
+## 1             NA
+## 2   3.480355e+09
+## 3   5.479025e+10
+## 4             NA
+## 5   1.434430e+09
+## 6   9.129595e+09
+## 7   8.301588e+08
+## 8   7.351881e+11
+## 9   2.842038e+11
+## 10  1.911564e+09
+## 11  1.873453e+09
+## 12  4.152226e+11
+## 13  1.967998e+11
+## 14  5.272617e+09
+## 15  8.076470e+09
+## 16  9.062907e+09
+## 17  5.336979e+10
+## 18  3.121500e+09
+## 19  1.273686e+10
+## 20  2.379049e+11
+## 21  8.320725e+08
+## 22  2.569187e+09
+## 23  3.480219e+09
+## 24  4.391582e+08
+## 25  8.397913e+09
+## 26  5.505888e+09
+## 27  5.788330e+09
+## 28  6.554206e+11
+## 29            NA
+## 30  6.001153e+09
+## 31  1.315302e+10
+## 32  2.628920e+09
+## 33  8.704861e+08
+## 34  5.392273e+08
+## 35  3.677898e+09
+## 36  1.008394e+10
+## 37  7.422955e+11
+## 38  3.417785e+10
+## 39            NA
+## 40  9.145003e+08
+## 41  4.276465e+11
+## 42  1.385058e+09
+## 43  6.439703e+09
+## 44  7.786093e+10
+## 45  1.211347e+12
+## 46  9.988658e+10
+## 47  3.502643e+08
+## 48  1.908805e+10
+## 49  3.219911e+09
+## 50  1.494951e+10
+## 51  1.071702e+10
+## 52  2.177427e+10
+## 53  3.056540e+10
+## 54            NA
+## 55  9.985844e+09
+## 56  6.164949e+10
+## 57  1.641588e+11
+## 58  5.512309e+08
+## 59  3.334689e+08
+## 60  2.430512e+10
+## 61  3.295338e+12
+## 62  8.281309e+12
+## 63  1.735179e+12
+## 64  1.731601e+12
+## 65  1.832776e+10
+## 66  9.983854e+10
+## 67  1.178493e+10
+## 68  1.045998e+09
+## 69  7.063708e+08
+## 70  5.685775e+09
+## 71  1.738101e+09
+## 72  8.242392e+09
+## 73  6.484574e+12
+## 74  1.002298e+13
+## 75  6.979444e+11
+## 76  8.916048e+11
+## 77  8.910187e+12
+## 78  1.058703e+09
+## 79  1.684110e+09
+## 80  1.255399e+11
+## 81  2.198017e+11
+## 82  1.362249e+12
+## 83  3.447543e+09
+## 84  5.067865e+09
+## 85  7.829154e+08
+## 86  3.057425e+09
+## 87  1.949954e+12
+## 88  4.983024e+09
+## 89            NA
+## 90  1.301338e+11
+## 91  1.068031e+09
+## 92  5.200444e+08
+## 93            NA
+## 94  1.928883e+10
+## 95  2.995361e+09
+## 96  3.701738e+08
+## 97  7.126679e+08
+## 98  3.953846e+09
+## 99  1.624449e+11
+## 100 2.758556e+13
+## 101 7.103508e+09
+## 102 1.716682e+11
+## 103 4.731062e+10
+## 104 5.804803e+12
+## 105 9.003639e+09
+## 106 6.262975e+12
+## 107 2.005546e+11
+## 108 2.581898e+11
+## 109 4.602819e+11
+## 110 4.683949e+11
+## 111 1.650210e+11
+## 112 1.095917e+11
+## 113           NA
+## 114 9.985296e+10
+## 115 1.563668e+09
+## 116 1.322437e+11
+## 117 1.141760e+12
+## 118 8.985353e+09
+## 119 4.887520e+12
+## 120 8.460424e+09
+## 121 1.829199e+10
+## 122 1.270536e+10
+## 123 6.725417e+07
+## 124           NA
+## 125 5.616331e+11
+## 126 1.849196e+09
+## 127 3.771186e+10
+## 128 1.369693e+09
+## 129 1.731198e+09
+## 130 3.402211e+12
+## 131 2.286931e+12
+## 132 2.082505e+12
+## 133 2.174346e+12
+## 134 7.937759e+09
+## 135 2.127406e+11
+## 136 1.726036e+10
+## 137 8.872953e+08
+## 138 8.740000e+08
+## 139 3.827021e+10
+## 140 2.483953e+09
+## 141 1.153921e+10
+## 142 5.985798e+12
+## 143 1.379770e+11
+## 144 1.292547e+12
+## 145 2.126351e+10
+## 146 6.720492e+09
+## 147 3.877674e+09
+## 148 1.743507e+09
+## 149 9.378974e+10
+## 150 6.243371e+08
+## 151 2.954130e+09
+## 152 4.306192e+09
+## 153 1.109377e+08
+## 154 1.293654e+09
+## 155 4.663314e+09
+## 156 7.079067e+11
+## 157 2.332263e+08
+## 158 9.669405e+11
+## 159 4.516736e+11
+## 160 4.473114e+11
+## 161 5.850970e+12
+## 162 1.288429e+09
+## 163 2.647884e+09
+## 164 1.136896e+09
+## 165 9.842976e+08
+## 166 3.885725e+10
+## 167 5.016469e+09
+## 168 8.905066e+09
+## 169 3.833994e+09
+## 170           NA
+## 171 5.494252e+09
+## 172 4.164428e+11
+## 173 2.682347e+09
+## 174 5.262328e+10
+## 175 5.107329e+09
+## 176 1.798374e+09
+## 177 6.944876e+10
+## 178 1.099812e+13
+## 179 3.772851e+09
+## 180           NA
+## 181 1.713156e+11
+## 182           NA
+## 183 2.737872e+13
+## 184 1.950741e+10
+## 185 9.170470e+10
+## 186 3.444111e+09
+## 187 7.395237e+10
+## 188 1.447595e+08
+## 189 1.230412e+10
+## 190 3.521340e+09
+## 191 8.855705e+09
+## 192 5.174475e+10
+## 193 8.102630e+10
+## 194 1.718861e+11
+## 195 1.183585e+11
+## 196 2.626197e+13
+## 197 2.405395e+11
+## 198 6.170180e+10
+## 199 1.775989e+10
+## 200 3.725326e+10
+## 201 2.597101e+11
+## 202 1.813939e+09
+## 203 2.690197e+08
+## 204 1.101898e+09
+## 205           NA
+## 206 1.895149e+11
+## 207 5.924240e+09
+## 208 6.540246e+09
+## 209 6.148798e+08
+## 210 6.358740e+08
+## 211 9.607448e+10
+## 212           NA
+## 213 2.911488e+10
+## 214 2.034220e+10
+## 215 1.293223e+11
+## 216 4.351039e+08
+## 217           NA
+## 218 1.363619e+11
+## 219 6.223723e+11
+## 220 6.223723e+11
+## 221           NA
+## 222 5.954026e+11
+## 223 1.633081e+10
+## 224 4.335205e+08
+## 225 8.343273e+08
+## 226           NA
+## 227 3.962614e+08
+## 228 3.968111e+11
+## 229 3.961921e+11
+## 230 3.968111e+11
+## 231 1.225742e+10
+## 232 9.476720e+08
+## 233 2.601587e+11
+## 234 2.720555e+11
+## 235 1.932589e+10
+## 236 8.605211e+08
+## 237 1.337598e+10
+## 238 1.263923e+11
+## 239 4.396461e+08
+## 240 1.488186e+09
+## 241 2.023635e+08
+## 242 8.154338e+09
+## 243 2.147319e+10
+## 244 2.729794e+11
+## 245 2.904663e+09
+## 246           NA
+## 247 1.374206e+07
+## 248 6.193247e+09
+## 249 3.126153e+10
+## 250 1.043374e+11
+## 251 1.648269e+12
+## 252 1.025235e+13
+## 253 4.558739e+12
+## 254 2.282326e+10
+## 255 1.376051e+10
+## 256 2.720147e+08
+## 257 1.171407e+11
+## 258 3.117252e+10
+## 259           NA
+## 260 4.313600e+09
+## 261 3.358157e+13
+## 262 9.652436e+09
+## 263 3.600683e+09
+## 264 6.689958e+09</code></pre>
+<pre class="r"><code>##visualizing data
+plot(x = data_merge$&#39;2000.y&#39; , y = data_merge$&#39;2000.x&#39;,main = &quot;Relationship between GDP and CO2 in 2000&quot;,xlab=&quot;GDP (current US$)&quot;,ylab=&quot;CO2 emissions (kt)&quot;)</code></pre>
+<p><img src="data:image/png;base64,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" width="672" /></p>
 
 
 
