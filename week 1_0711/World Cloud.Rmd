@@ -1,0 +1,113 @@
+---
+title: "World Cloud of Malala's speech"
+author: "Rachel Chang"
+date: "2019/7/14"
+output: html_document
+---
+
+```{r}
+library("tm")  # for text mining
+library("SnowballC")  # for text stemming
+library("wordcloud")  # word-cloud generator 
+library("RColorBrewer")  # color palettes
+
+# Read the text file from internet
+filePath <- "https://rachel0718.github.io/data_science/week%201_0711/Malala's%20speech%20to%20the%20UN%20Youth%20Takeover.txt"
+text <- readLines(filePath)
+
+# Load the data as a corpus
+docs <- Corpus(VectorSource(text))
+inspect(docs)  # 檢查文檔的內容
+toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
+
+docs <- tm_map(docs, toSpace, "–")
+docs <- tm_map(docs, toSpace, "�V")
+docs <- tm_map(docs, toSpace, "��")
+docs <- tm_map(docs, toSpace, "In")
+docs <- tm_map(docs, toSpace, "the")
+docs <- tm_map(docs, toSpace, "name")
+docs <- tm_map(docs, toSpace, "of")
+docs <- tm_map(docs, toSpace, "The")
+docs <- tm_map(docs, toSpace, "Most")
+docs <- tm_map(docs, toSpace, "is")
+docs <- tm_map(docs, toSpace, "for")
+docs <- tm_map(docs, toSpace, "Vuk")
+docs <- tm_map(docs, toSpace, "Mr")
+docs <- tm_map(docs, toSpace, "and")
+docs <- tm_map(docs, toSpace, "it")
+docs <- tm_map(docs, toSpace, "an")
+docs <- tm_map(docs, toSpace, "to")
+docs <- tm_map(docs, toSpace, "be")
+docs <- tm_map(docs, toSpace, "don't")
+docs <- tm_map(docs, toSpace, "I")
+docs <- tm_map(docs, toSpace, "know")
+docs <- tm_map(docs, toSpace, "my")
+docs <- tm_map(docs, toSpace, "me")
+docs <- tm_map(docs, toSpace, "have")
+docs <- tm_map(docs, toSpace, "them")
+docs <- tm_map(docs, toSpace, "am")
+docs <- tm_map(docs, toSpace, "are")
+docs <- tm_map(docs, toSpace, "a")
+docs <- tm_map(docs, toSpace, "not")
+docs <- tm_map(docs, toSpace, "There")
+docs <- tm_map(docs, toSpace, "Their")
+docs <- tm_map(docs, toSpace, "one")
+docs <- tm_map(docs, toSpace, "by")
+docs <- tm_map(docs, toSpace, "our")
+docs <- tm_map(docs, toSpace, "on")
+docs <- tm_map(docs, toSpace, "too")
+docs <- tm_map(docs, toSpace, "that")
+docs <- tm_map(docs, toSpace, "there")
+docs <- tm_map(docs, toSpace, "was")
+docs <- tm_map(docs, toSpace, "it's")
+docs <- tm_map(docs, toSpace, "up")
+docs <- tm_map(docs, toSpace, "us")
+docs <- tm_map(docs, toSpace, "One")
+docs <- tm_map(docs, toSpace, "A")
+docs <- tm_map(docs, toSpace, "from")
+docs <- tm_map(docs, toSpace, "all")
+docs <- tm_map(docs, toSpace, "call upon")
+docs <- tm_map(docs, toSpace, "But")
+docs <- tm_map(docs, toSpace, "can")
+docs <- tm_map(docs, toSpace, "will")
+docs <- tm_map(docs, toSpace, "into")
+docs <- tm_map(docs, toSpace, "So")
+docs <- tm_map(docs, toSpace, "do")
+docs <- tm_map(docs, removePunctuation)
+docs <- tm_map(docs, removeNumbers)
+docs <- tm_map(docs, stripWhitespace)
+```
+
+```{r}
+dtm <- TermDocumentMatrix(docs)
+m <- as.matrix(dtm)
+v <- sort(rowSums(m),decreasing=TRUE)
+d <- data.frame(word = names(v),freq=v)
+head(d, 10)
+```
+
+# 繪製前10個常用詞的頻率圖
+```{r}
+barplot(d[1:10,]$freq, names.arg = d[1:10,]$word,
+        col = "lightblue" , main ="Most frequent words",
+        ylab = "Word frequencies")
+```
+
+```{r}
+set.seed(1234)
+wordcloud(words = d$word, freq = d$freq, min.freq = 1,
+          max.words=50, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+
+# 探索頻繁的術語及其關聯
+```{r}
+findFreqTerms(dtm, lowfreq = 6)  #找到至少出現六次的單詞
+```
+```{r}
+findAssocs(dtm, terms = "rights", corlimit = 0.45)  #用findAssocs函數找出文字與rights相關性大於0.45的詞
+```
+
+data source: http://www.sthda.com/english/wiki/text-mining-and-word-cloud-fundamentals-in-r-5-simple-steps-you-should-know#step-2-install-and-load-the-required-packages
+
