@@ -1,0 +1,207 @@
+---
+title: "R_basic"
+author: "Rachel Chang"
+date: "2019/7/13"
+output: html_document
+---
+
+* [Arithmetic](#1)
+
+* [Variables](#2) 
+
+* [Data Types](#3) 
+
+* [Vector](#4) 
+
+* [遺失值](#5) 
+
+* [Pipe管線運算子](#6)
+
+<h2 id = '1'></h2>
+# Arithmetic
+```{r}
+#運算符號與數字間的空格非必要
+8 + 2 #加法
+8 - 2 #減法
+8 * 2 #乘法
+8 / 2 #除法
+8 %% 2 #取餘數
+2 * 3 + 4 #先乘除後加減
+2 * (3 + 4) #括弧內優先計算
+```
+<h2 id = '2'></h2>
+# Variables
+
+**變數指派**
+```{r}
+x <- 2 #變數名稱開頭不能為數字或底線
+x
+2 -> x #箭頭可指向另一個方向
+x
+y = 3 #亦可使用等號指派
+y
+a <- b <- 4 #連續指派
+a
+b
+assign("c", 5)
+c
+```
+**移除變數**
+```{r}
+assign("c", 5)
+c
+rm(c)
+c
+```
+<h2 id = '3'></h2>
+# Data Types
+
+**數值資料**
+```{r}
+is.numeric(x) #檢測變數是否為numeric
+d <- 1L #指派整數需附加L
+d
+is.integer(d) #檢測變數是否為interger
+is.numeric(d) 
+
+class(2L) #用class函數檢測資料型別
+class(2.6)
+class(2L * 2.6)
+class(5L / 2L)
+```
+**字元(字串)資料**
+```{r}
+x <- factor("r studio") #用factor函數會出現Levels的訊息
+x
+y <- class("r studio") 
+y
+nchar(y) #用nchar函數找出character的長度
+nchar("r studio")
+nchar("2019")
+```
+**日期**
+```{r}
+date1 <- as.Date("2019-7-13") #Date儲存日期
+date1
+class(date1)
+as.numeric(date1) #自1970年1月1日算起的天數
+
+date2 <- as.POSIXct("2019-7-13 08:10") #用POSIXct儲存日期和時間
+date2
+class(date2)
+as.numeric(date2) #自1970年1月1日算起的秒數
+class(as.numeric(date2)) #轉換資料型別
+```
+**邏輯資料**
+```{r}
+TRUE * 6 #數值表示TRUE=1，1*6=6
+FALSE * 6 #數值表示FALSE=0，0*6=0
+
+q <- TRUE
+class(q)
+is.logical(q) #檢測變數是否為logical
+
+2 == 3 # 2 是否等於 3 ?
+2 != 3 # 2 是否不等於 3 ?
+```
+<h2 id = '4'></h2>
+# Vector
+
+**向量運算**
+```{r}
+x <- c(1,2,3,4,5) #"c" means "combine"
+x
+x + 2 #每個元素加2
+x - 2 #每個元素減2
+x * 2 #每個元素乘2
+x / 2 #每個元素除2
+x ^ 2 #每個元素平方
+sqrt(x) #每個元素開平方
+y <- c(6,7,8,9,10)
+y
+z <- x + y #兩(相同長度)向量可相加 [減乘除亦同]
+total <- sum(z) #sum向量加總
+total
+mean <- mean(z) #mean向量平均
+mean
+
+x <- 1:10 # ":"可生成任意連續數字
+x
+length(x) #查看向量長度
+```
+**對不相等向量運算**
+```{r}
+x <- c(1,2,3,4) 
+x + c(1,2) #兩向量有倍數關係才可運算
+x + c(1,2,3)
+```
+**any,all函數**
+```{r}
+x <- 10:1
+y <- -4:5
+nchar(y) #每個元素的長度
+any(x < y) #查看至少一個比較結果是否成立
+all(x < y) #查看所有比較結果是否成立
+```
+**查看向量元素**
+```{r}
+x <- c(1,2,3,4,5)
+x[1] #查看第一個元素
+x[1:3] #查看連續元素
+x[c(1,3)] #查看非連續元素
+```
+**向量命名**
+```{r}
+c(one = "a", two = "b", three = "c") 
+
+e <- 1:3
+names(e) <- c("a","b","c") #names為命名元素
+e
+```
+**因素向量**
+因素向量主要是用來存放分類變數，而非單純的數字
+```{r}
+#類別間無法比較的名目型變數，例:國家
+countries_vector <- c("Taiwan","Japan","America","China","England" )
+factor_countries_vector <- as.factor(countries_vector) 
+factor_countries_vector
+
+#類別間可以比較的名目型變數，例:教育程度
+education_level_vector <- c("high school","college","masters","doctorate")
+factor_education_level <- factor(education_level_vector,levels = c("high school","college","masters","doctorate"),order=TRUE)
+factor_education_level
+```
+**查看函數說明文件**
+```{r}
+?'==' #用?''查看==的操作說明
+apropos("mea") #用apropos查看相關函數
+```
+<h2 id = '5'></h2>
+# 遺失值
+
+**NA**
+```{r}
+k <- c(1,2,NA,4,NA,5) #NA會被vector視作一個元素
+k
+is.na(k) #檢測是否為遺失值
+mean(k) #元素有NA無法計算
+mean(k, na.rm=TRUE) #用na.rm=TRUE排除遺失值再計算
+```
+**NULL**
+```{r}
+s <- c(1,2,NULL,4,NULL,5) #NULL是虛無的，不能成為vector的一部分
+s
+```
+<h2 id = '6'></h2>
+# Pipe管線運算子
+magrittr套件中的pipe運算子會將左邊的值或物件移植到其右邊函數的第一個引數
+```{r}
+library(magrittr)
+x <- 1:10
+x %>% mean #用pipe將X移植到mean函數(pipe讀取方式由左到右)
+
+y <- c(1,2,NA,3,NA,4,5)
+sum(is.na(y)) #嵌入函數方法
+y %>% is.na %>% sum #用pipe串聯函數，函數不須額外引數則不必括號
+y %>% mean(na.rm=TRUE) #額外引數需括號
+```
