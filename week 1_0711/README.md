@@ -4,7 +4,7 @@
 
    * [HW1][Data Manipulation](https://rachel0718.github.io/data_science/week%201_0711/Data%20Manipulation.html)
     
-   * [Web crawler](https://rachel0718.github.io/data_science/week%201_0711/Web_Crawler.html)
+   * [Web crawler](https://rachel0718.github.io/data_science/week%201_0711/Web%20Crawler.html)
    
    * [Word Cloud](https://rachel0718.github.io/data_science/week%201_0711/World%20Cloud.html)
     
