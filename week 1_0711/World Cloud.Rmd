@@ -109,5 +109,5 @@ findFreqTerms(dtm, lowfreq = 6)  #找到至少出現六次的單詞
 findAssocs(dtm, terms = "rights", corlimit = 0.45)  #用findAssocs函數找出文字與rights相關性大於0.45的詞
 ```
 
-data source: http://www.sthda.com/english/wiki/text-mining-and-word-cloud-fundamentals-in-r-5-simple-steps-you-should-know#step-2-install-and-load-the-required-packages
+data source: https://theirworld.org/explainers/malala-yousafzais-speech-at-the-youth-takeover-of-the-united-nations
 
