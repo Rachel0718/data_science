@@ -18,7 +18,7 @@
 
  ### [Week 1_07/11](https://github.com/Rachel0718/data_science/tree/master/week%201_0711)
 
- ### Week 2_07/15
+ ### [Week 2_07/15](https://github.com/Rachel0718/data_science/tree/master/week%202_0715)
 
  ### Week 2_07/18
 
