@@ -7,23 +7,26 @@ output: html_document
 
 ```{r}
 library(rvest)
-DcardNCCU <- "https://www.dcard.tw/topics/%E6%94%BF%E5%A4%A7?latest=true"
+DcardNCCU <- "https://www.dcard.tw/f/nccu?latest=false"
 Dcardcontent <- read_html(DcardNCCU)
 post_title <- Dcardcontent %>% 
-  html_nodes(".PostEntry_unread_2U217-") %>%
-  html_text()
-post_likes <- Dcardcontent %>% 
-  html_nodes(".hlvyVg") %>%
+  html_nodes(".gmfDU") %>%
   html_text()
 post_author <- Dcardcontent %>% 
-  html_nodes(".PostEntry_header_1iheIo") %>%
+  html_nodes(".PostAuthor_root_3vAJfe") %>%
   html_text()  
+post_likes <- Dcardcontent %>% 
+  html_nodes(".cGEHtj") %>%
+  html_text()
 post_url <- Dcardcontent %>% 
-  html_nodes(".PostEntry_unread_2U217-") %>%
+  html_nodes(".gmfDU") %>%
   html_attr("herf")
 DcardNCCU <- data.frame(title= post_title,
-                        likes= post_likes,
-                        author= post_author)
-DcardNCCU[1:30,c("title","likes","author")]
+                        author= post_author,
+                        likes= post_likes)
+DcardNCCU[,c("title","author","likes")]
+
+library(knitr)
+kable(DcardNCCU)
                         
 ```

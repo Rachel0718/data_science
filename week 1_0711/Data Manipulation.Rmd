@@ -25,6 +25,9 @@ GDP <- select(a,"Country Name","2000")
 data_merge<-merge(CO2, GDP, by="Country Name")
 data_merge
 
+library(knitr)
+kable(data_merge)
+
 ```
 
 ```{r}

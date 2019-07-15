@@ -383,86 +383,403 @@ $(document).ready(function () {
 
 <pre class="r"><code>library(rvest)</code></pre>
 <pre><code>## Loading required package: xml2</code></pre>
-<pre class="r"><code>DcardNCCU &lt;- &quot;https://www.dcard.tw/topics/%E6%94%BF%E5%A4%A7?latest=true&quot;
+<pre class="r"><code>DcardNCCU &lt;- &quot;https://www.dcard.tw/f/nccu?latest=false&quot;
 Dcardcontent &lt;- read_html(DcardNCCU)
 post_title &lt;- Dcardcontent %&gt;% 
-  html_nodes(&quot;.PostEntry_unread_2U217-&quot;) %&gt;%
-  html_text()
-post_likes &lt;- Dcardcontent %&gt;% 
-  html_nodes(&quot;.hlvyVg&quot;) %&gt;%
+  html_nodes(&quot;.gmfDU&quot;) %&gt;%
   html_text()
 post_author &lt;- Dcardcontent %&gt;% 
-  html_nodes(&quot;.PostEntry_header_1iheIo&quot;) %&gt;%
+  html_nodes(&quot;.PostAuthor_root_3vAJfe&quot;) %&gt;%
   html_text()  
+post_likes &lt;- Dcardcontent %&gt;% 
+  html_nodes(&quot;.cGEHtj&quot;) %&gt;%
+  html_text()
 post_url &lt;- Dcardcontent %&gt;% 
-  html_nodes(&quot;.PostEntry_unread_2U217-&quot;) %&gt;%
+  html_nodes(&quot;.gmfDU&quot;) %&gt;%
   html_attr(&quot;herf&quot;)
 DcardNCCU &lt;- data.frame(title= post_title,
-                        likes= post_likes,
-                        author= post_author)
-DcardNCCU[1:30,c(&quot;title&quot;,&quot;likes&quot;,&quot;author&quot;)]</code></pre>
-<pre><code>##                                              title likes
-## 1          [問] 劉若韶 生命價值與哲學思維 期末報告     0
-## 2                                           輔外交     1
-## 3                               不知道有沒有同感？    28
-## 4                                       商科十系！     0
-## 5                          姜翠芬 西方文學經典成績     0
-## 6                                       振聲音樂會    15
-## 7                                     明星球員學弟    49
-## 8                         鄉下逢甲就是南部人在讀的    39
-## 9                                            掃毒2     2
-## 10 [吃貨政大]-政大美食精選特集&lt;U+2728&gt;&lt;U+0001F52E&gt;   157
-## 11                                        一些心情    48
-## 12                                  睡覺區後續？？    45
-## 13                          東南亞發展與治理還好嗎     2
-## 14              各位安安，暑假註冊組下午有上班嗎？     8
-## 15                                李聖傑刑法二成績     7
-## 16                                        喜歡的人    13
-## 17                                        信助經濟     5
-## 18                                聽說今天是轉學考    24
-## 19                                            出國     6
-## 20                              今天學校怎麼一堆人    16
-## 21                               廖棟樑 古典詩選讀     4
-## 22                                圖書館不要講電話    18
-## 23                                        宿舍候補     5
-## 24                            把學生當白癡的老師？    44
-## 25                                        深夜聊聊    10
-## 26                                  大學英文ㄟ成績    11
-## 27                                  這樣對ㄇ，嗯？    14
-## 28                                            暑假    27
-## 29                                      成績沒出來     5
-## 30                                真的好想上政大喔    80
-##                                         author
-## 1                         政治大學國立政治大學
-## 2                         政治大學國立政治大學
-## 3                         政治大學國立政治大學
-## 4                         政治大學國立政治大學
-## 5                         政治大學國立政治大學
-## 6  政治大學國立政治大學 傳播學院大一大二不分系
-## 7                         政治大學國立政治大學
-## 8                             逢甲大學逢甲大學
-## 9                         政治大學國立政治大學
-## 10                        政治大學國立政治大學
-## 11                        政治大學國立政治大學
-## 12           政治大學國立政治大學 資訊管理學系
-## 13                        政治大學國立政治大學
-## 14                        政治大學國立政治大學
-## 15                        政治大學國立政治大學
-## 16                        政治大學國立政治大學
-## 17                        政治大學國立政治大學
-## 18                        政治大學國立政治大學
-## 19                        政治大學國立政治大學
-## 20                        政治大學國立政治大學
-## 21                        政治大學國立政治大學
-## 22                        政治大學國立政治大學
-## 23                        政治大學國立政治大學
-## 24                        政治大學國立政治大學
-## 25                        政治大學國立政治大學
-## 26                        政治大學國立政治大學
-## 27                        政治大學國立政治大學
-## 28                        政治大學國立政治大學
-## 29                        政治大學國立政治大學
-## 30                                考試淡江大學</code></pre>
+                        author= post_author,
+                        likes= post_likes)
+DcardNCCU[,c(&quot;title&quot;,&quot;author&quot;,&quot;likes&quot;)]</code></pre>
+<pre><code>##                                              title
+## 1                                       腳踏兩條船
+## 2                                       失戀經驗談
+## 3                                         喜歡的人
+## 4                                         商院妹子
+## 5                             政大生沒做會遺憾的事
+## 6                              大家可以為我解惑嗎?
+## 7                                     圖書館底樓A1
+## 8                                     成績申訴管道
+## 9                             邵雨薇也太可愛了吧！
+## 10                                  校園內名車一堆
+## 11                            想問看看大家的感情觀
+## 12                              【猜謎】這樣要多少
+## 13                                      棉被洗衣店
+## 14                              超過時間辦畢業離校
+## 15                                      振聲合唱團
+## 16          [問卦] 遇到這樣的事 我是不是要脫魯了？
+## 17                                         TTJ統計
+## 18                                            問卦
+## 19                              這到底是什麼緣分啦
+## 20                      [問]鄭光明 知識論 期末報告
+## 21                                          輔外交
+## 22                    有人在政大談了戀愛又失戀的嗎
+## 23                            [政大快訊]郭董，郭懂
+## 24                              真心推薦振聲合唱團
+## 25                                    認識理院妹子
+## 26                                            運彩
+## 27                              不知道有沒有同感？
+## 28                                #問 畢業榮譽彩帶
+## 29                                          改密碼
+## 30                              土地政策分數出來了
+## 31                                      成績還沒到
+## 32                交流版那個日本人各位有什麼想法？
+## 33                                      振聲音樂會
+## 34                                    明星球員學弟
+## 35                                          姊弟戀
+## 36                                      土地法成績
+## 37                                           掃毒2
+## 38                                          徵才月
+## 39 [吃貨政大]-政大美食精選特集&lt;U+2728&gt;&lt;U+0001F52E&gt;
+## 40                                        親善大使
+## 41                                        一些心情
+## 42                                  睡覺區後續？？
+## 43                    政大有沒有這種雙重標準的人阿
+## 44                              政大有凝聚力的社團
+## 45                          東南亞發展與治理還好嗎
+## 46              各位安安，暑假註冊組下午有上班嗎？
+## 47                    跟剛認識沒多久的男生講話會硬
+## 48                                            志願
+## 49                              哈囉別鬧了～小營隊
+## 50                                李聖傑刑法二成績
+## 51                                        愷民好帥
+## 52                                        有關學分
+##                                 author likes
+## 1                         國立政治大學    54
+## 2                國立政治大學 財政學系    51
+## 3                         國立政治大學    33
+## 4                         國立政治大學    29
+## 5                         國立政治大學    23
+## 6            國立政治大學 資訊管理學系    17
+## 7                         國立政治大學    16
+## 8                         國立政治大學    14
+## 9                   邵雨薇也太可愛了吧    11
+## 10                        國立政治大學    10
+## 11                        國立政治大學     9
+## 12                        國立政治大學     8
+## 13                        國立政治大學     7
+## 14                        國立政治大學     6
+## 15                        國立政治大學     6
+## 16     國立政治大學 風險管理與保險學系     5
+## 17                        國立政治大學     4
+## 18                        國立政治大學     4
+## 19                        國立政治大學     3
+## 20                        國立政治大學     3
+## 21                        國立政治大學     3
+## 22                        國立政治大學     1
+## 23                        國立政治大學    17
+## 24                        國立政治大學    21
+## 25                        國立政治大學     8
+## 26                        國立政治大學     7
+## 27                        國立政治大學    50
+## 28                        國立政治大學     9
+## 29                        國立政治大學     9
+## 30               國立政治大學 地政學系    10
+## 31                        國立政治大學    12
+## 32                        國立政治大學    12
+## 33 國立政治大學 傳播學院大一大二不分系    16
+## 34                        國立政治大學    52
+## 35                        國立政治大學    17
+## 36                        國立政治大學     5
+## 37                        國立政治大學     3
+## 38                        國立政治大學    16
+## 39                        國立政治大學   162
+## 40                        國立政治大學    11
+## 41                        國立政治大學    51
+## 42           國立政治大學 資訊管理學系    47
+## 43                        國立政治大學    25
+## 44                        國立政治大學    24
+## 45                        國立政治大學     1
+## 46                        國立政治大學     9
+## 47                        國立政治大學    22
+## 48                        國立政治大學     8
+## 49               國立政治大學 法律學系    64
+## 50                        國立政治大學     9
+## 51                        國立政治大學     7
+## 52                        國立政治大學     8</code></pre>
+<pre class="r"><code>library(knitr)
+kable(DcardNCCU)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">title</th>
+<th align="left">author</th>
+<th align="left">likes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">腳踏兩條船</td>
+<td align="left">國立政治大學</td>
+<td align="left">54</td>
+</tr>
+<tr class="even">
+<td align="left">失戀經驗談</td>
+<td align="left">國立政治大學 財政學系</td>
+<td align="left">51</td>
+</tr>
+<tr class="odd">
+<td align="left">喜歡的人</td>
+<td align="left">國立政治大學</td>
+<td align="left">33</td>
+</tr>
+<tr class="even">
+<td align="left">商院妹子</td>
+<td align="left">國立政治大學</td>
+<td align="left">29</td>
+</tr>
+<tr class="odd">
+<td align="left">政大生沒做會遺憾的事</td>
+<td align="left">國立政治大學</td>
+<td align="left">23</td>
+</tr>
+<tr class="even">
+<td align="left">大家可以為我解惑嗎?</td>
+<td align="left">國立政治大學 資訊管理學系</td>
+<td align="left">17</td>
+</tr>
+<tr class="odd">
+<td align="left">圖書館底樓A1</td>
+<td align="left">國立政治大學</td>
+<td align="left">16</td>
+</tr>
+<tr class="even">
+<td align="left">成績申訴管道</td>
+<td align="left">國立政治大學</td>
+<td align="left">14</td>
+</tr>
+<tr class="odd">
+<td align="left">邵雨薇也太可愛了吧！</td>
+<td align="left">邵雨薇也太可愛了吧</td>
+<td align="left">11</td>
+</tr>
+<tr class="even">
+<td align="left">校園內名車一堆</td>
+<td align="left">國立政治大學</td>
+<td align="left">10</td>
+</tr>
+<tr class="odd">
+<td align="left">想問看看大家的感情觀</td>
+<td align="left">國立政治大學</td>
+<td align="left">9</td>
+</tr>
+<tr class="even">
+<td align="left">【猜謎】這樣要多少</td>
+<td align="left">國立政治大學</td>
+<td align="left">8</td>
+</tr>
+<tr class="odd">
+<td align="left">棉被洗衣店</td>
+<td align="left">國立政治大學</td>
+<td align="left">7</td>
+</tr>
+<tr class="even">
+<td align="left">超過時間辦畢業離校</td>
+<td align="left">國立政治大學</td>
+<td align="left">6</td>
+</tr>
+<tr class="odd">
+<td align="left">振聲合唱團</td>
+<td align="left">國立政治大學</td>
+<td align="left">6</td>
+</tr>
+<tr class="even">
+<td align="left">[問卦] 遇到這樣的事 我是不是要脫魯了？</td>
+<td align="left">國立政治大學 風險管理與保險學系</td>
+<td align="left">5</td>
+</tr>
+<tr class="odd">
+<td align="left">TTJ統計</td>
+<td align="left">國立政治大學</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">問卦</td>
+<td align="left">國立政治大學</td>
+<td align="left">4</td>
+</tr>
+<tr class="odd">
+<td align="left">這到底是什麼緣分啦</td>
+<td align="left">國立政治大學</td>
+<td align="left">3</td>
+</tr>
+<tr class="even">
+<td align="left">[問]鄭光明 知識論 期末報告</td>
+<td align="left">國立政治大學</td>
+<td align="left">3</td>
+</tr>
+<tr class="odd">
+<td align="left">輔外交</td>
+<td align="left">國立政治大學</td>
+<td align="left">3</td>
+</tr>
+<tr class="even">
+<td align="left">有人在政大談了戀愛又失戀的嗎</td>
+<td align="left">國立政治大學</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">[政大快訊]郭董，郭懂</td>
+<td align="left">國立政治大學</td>
+<td align="left">17</td>
+</tr>
+<tr class="even">
+<td align="left">真心推薦振聲合唱團</td>
+<td align="left">國立政治大學</td>
+<td align="left">21</td>
+</tr>
+<tr class="odd">
+<td align="left">認識理院妹子</td>
+<td align="left">國立政治大學</td>
+<td align="left">8</td>
+</tr>
+<tr class="even">
+<td align="left">運彩</td>
+<td align="left">國立政治大學</td>
+<td align="left">7</td>
+</tr>
+<tr class="odd">
+<td align="left">不知道有沒有同感？</td>
+<td align="left">國立政治大學</td>
+<td align="left">50</td>
+</tr>
+<tr class="even">
+<td align="left">#問 畢業榮譽彩帶</td>
+<td align="left">國立政治大學</td>
+<td align="left">9</td>
+</tr>
+<tr class="odd">
+<td align="left">改密碼</td>
+<td align="left">國立政治大學</td>
+<td align="left">9</td>
+</tr>
+<tr class="even">
+<td align="left">土地政策分數出來了</td>
+<td align="left">國立政治大學 地政學系</td>
+<td align="left">10</td>
+</tr>
+<tr class="odd">
+<td align="left">成績還沒到</td>
+<td align="left">國立政治大學</td>
+<td align="left">12</td>
+</tr>
+<tr class="even">
+<td align="left">交流版那個日本人各位有什麼想法？</td>
+<td align="left">國立政治大學</td>
+<td align="left">12</td>
+</tr>
+<tr class="odd">
+<td align="left">振聲音樂會</td>
+<td align="left">國立政治大學 傳播學院大一大二不分系</td>
+<td align="left">16</td>
+</tr>
+<tr class="even">
+<td align="left">明星球員學弟</td>
+<td align="left">國立政治大學</td>
+<td align="left">52</td>
+</tr>
+<tr class="odd">
+<td align="left">姊弟戀</td>
+<td align="left">國立政治大學</td>
+<td align="left">17</td>
+</tr>
+<tr class="even">
+<td align="left">土地法成績</td>
+<td align="left">國立政治大學</td>
+<td align="left">5</td>
+</tr>
+<tr class="odd">
+<td align="left">掃毒2</td>
+<td align="left">國立政治大學</td>
+<td align="left">3</td>
+</tr>
+<tr class="even">
+<td align="left">徵才月</td>
+<td align="left">國立政治大學</td>
+<td align="left">16</td>
+</tr>
+<tr class="odd">
+<td align="left">[吃貨政大]-政大美食精選特集✨🔮</td>
+<td align="left">國立政治大學</td>
+<td align="left">162</td>
+</tr>
+<tr class="even">
+<td align="left">親善大使</td>
+<td align="left">國立政治大學</td>
+<td align="left">11</td>
+</tr>
+<tr class="odd">
+<td align="left">一些心情</td>
+<td align="left">國立政治大學</td>
+<td align="left">51</td>
+</tr>
+<tr class="even">
+<td align="left">睡覺區後續？？</td>
+<td align="left">國立政治大學 資訊管理學系</td>
+<td align="left">47</td>
+</tr>
+<tr class="odd">
+<td align="left">政大有沒有這種雙重標準的人阿</td>
+<td align="left">國立政治大學</td>
+<td align="left">25</td>
+</tr>
+<tr class="even">
+<td align="left">政大有凝聚力的社團</td>
+<td align="left">國立政治大學</td>
+<td align="left">24</td>
+</tr>
+<tr class="odd">
+<td align="left">東南亞發展與治理還好嗎</td>
+<td align="left">國立政治大學</td>
+<td align="left">1</td>
+</tr>
+<tr class="even">
+<td align="left">各位安安，暑假註冊組下午有上班嗎？</td>
+<td align="left">國立政治大學</td>
+<td align="left">9</td>
+</tr>
+<tr class="odd">
+<td align="left">跟剛認識沒多久的男生講話會硬</td>
+<td align="left">國立政治大學</td>
+<td align="left">22</td>
+</tr>
+<tr class="even">
+<td align="left">志願</td>
+<td align="left">國立政治大學</td>
+<td align="left">8</td>
+</tr>
+<tr class="odd">
+<td align="left">哈囉別鬧了～小營隊</td>
+<td align="left">國立政治大學 法律學系</td>
+<td align="left">64</td>
+</tr>
+<tr class="even">
+<td align="left">李聖傑刑法二成績</td>
+<td align="left">國立政治大學</td>
+<td align="left">9</td>
+</tr>
+<tr class="odd">
+<td align="left">愷民好帥</td>
+<td align="left">國立政治大學</td>
+<td align="left">7</td>
+</tr>
+<tr class="even">
+<td align="left">有關學分</td>
+<td align="left">國立政治大學</td>
+<td align="left">8</td>
+</tr>
+</tbody>
+</table>
 
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Data Manipulaiton"
+title: "Visualizing Data"
 author: "Rachel Chang"
 date: "2019/7/12"
 output: "html_document"
@@ -8,6 +8,7 @@ output: "html_document"
 data source1 : https://data.worldbank.org/indicator/NY.GDP.MKTP.CD
 
 data source2 : https://data.worldbank.org/indicator/EN.ATM.CO2E.KT
+
 
 ```{r}
 path = "D:/資料科學程式設計/data_science/week 1_0711/data CO2/CO2.xlsx"
@@ -24,6 +25,9 @@ GDP <- select(a,"Country Name","2000")
 
 data_merge<-merge(CO2, GDP, by="Country Name")
 data_merge
+
+library(knitr)
+kable(data_merge)
 
 ```
 
