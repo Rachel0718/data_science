@@ -1,0 +1,33 @@
+---
+title: "Data Manipulaiton"
+author: "Rachel Chang"
+date: "2019/7/12"
+output: "html_document"
+---
+
+data source1 : https://data.worldbank.org/indicator/NY.GDP.MKTP.CD
+
+data source2 : https://data.worldbank.org/indicator/EN.ATM.CO2E.KT
+
+```{r}
+path = "D:/資料科學程式設計/data_science/week 1_0711/data CO2/CO2.xlsx"
+path2 = "D:/資料科學程式設計/data_science/week 1_0711/data GDP/GDP.xlsx"
+
+library(tidyverse)
+library(dplyr)
+library(readxl)
+c = read_excel(path)
+a = read_excel(path2)
+
+CO2 <- select(c,"Country Name","2000")
+GDP <- select(a,"Country Name","2000")
+
+data_merge<-merge(CO2, GDP, by="Country Name")
+data_merge
+
+```
+
+```{r}
+##visualizing data
+plot(x = data_merge$'2000.y' , y = data_merge$'2000.x',log="x",main = "Relationship between GDP and CO2 in 2000",xlab="log GDP (current US$)",ylab="CO2 emissions (kt)")
+```
