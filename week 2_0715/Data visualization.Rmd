@@ -1,0 +1,225 @@
+---
+title: "Data Visualization"
+author: "Rachel Chang"
+date: "2019/7/15"
+output: html_document
+---
+#### 動機 : 對網路新聞標題「國家愈有錢，人民愈健康?」產生疑惑，想藉由資料分析進行討論。
+
+## 一、匯入特定資料:
+
+data source1: https://data.worldbank.org/indicator/NY.GDP.MKTP.CD
+
+data source2: https://data.worldbank.org/indicator/SP.DYN.LE00.IN
+
+```{r}
+path = "D:/資料科學程式設計/data_science/week 2_0715/data/GDP2.xlsx"
+path2 = "D:/資料科學程式設計/data_science/week 2_0715/data/life2.xlsx"
+
+library(tidyverse)
+library(dplyr)
+library(readxl)
+a = read_excel(path)
+b = read_excel(path2)
+```
+## 二、固定國家
+### 分別先觀察低度發展國家(以尼日為例)和高度發展國家(以英國為例)近十年GDP與Life expectancy的關係:
+
+
+```{r}
+NigerGDP <- select(a,"year","Niger")
+NigerLIFE <- select(b,"year","Niger")
+data_Niger<-merge(NigerGDP, NigerLIFE, by="year")
+colnames(data_Niger)<-c("year" ,"NigerGDP","NigerLIFE")
+data_Niger[48:57,]
+```
+
+### 尼日近十年GDP與Life expectancy的關係
+
+```{r}
+library(ggplot2)
+ggplot(data_Niger[48:57,], aes(x = year)) +
+  geom_col(aes( y = NigerLIFE*70000000, fill="redfill")) +
+  geom_text(aes(y = NigerLIFE*70000000, label = NigerLIFE), fontface = "bold", vjust = 1.4, color = "white", size = 3,check_overlap = TRUE) +
+  geom_line(aes(y = NigerGDP , group = 1, color = 'blackline')) +
+  geom_text(aes(y = NigerGDP , label = round( NigerGDP, 2)), vjust = 1.4, color = "blue", size = 2,check_overlap = TRUE) +
+  geom_point(aes(y = NigerGDP ))+
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . / 70000000)) +
+  scale_fill_manual('', labels = 'NigerLIFE', values = "#C00000") +
+  scale_color_manual('', labels = 'NigerGDP', values = 'black') +
+  ggtitle("Relationship between GDP & Life expectancy of Niger in 2007-2016")+
+  theme_minimal()
+```
+
+#### 以雙折線圖呈現
+
+```{r}
+library(ggplot2)
+ggplot(data_Niger[48:57,], aes(x = year)) +
+  geom_line(aes(y = NigerGDP , group = 1, color = 'NigerGDP'))+
+  geom_text(aes(y = NigerGDP, label = NigerGDP), vjust =1.4, color = "black", size = 3,check_overlap = TRUE) +
+  geom_point(aes(y = NigerGDP))+
+  geom_line(aes(y=NigerLIFE*70000000,  group =1, color = 'NigerLIFE'))+
+  geom_text(aes(y = NigerLIFE*70000000, label = NigerLIFE), vjust = 1.4, color = "black", size = 3,check_overlap = TRUE) +
+  geom_point(aes(y = NigerLIFE*70000000))+
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . / 70000000)) +
+  ggtitle("Relationship between GDP & Life expectancy of Niger in 2007-2016")+
+  theme_minimal()
+
+```
+
+```{r}
+UKGDP <- select(a,"year","United Kingdom")
+UKLIFE <- select(b,"year","United Kingdom")
+data_UK<-merge(UKGDP, UKLIFE, by="year")
+colnames(data_UK)<-c("year" ,"UKGDP","UKLIFE")
+data_UK[48:57,]
+
+```
+
+### 英國近十年GDP與Life expectancy的關係
+
+```{r}
+library(ggplot2)
+ggplot(data_UK[48:57,], aes(x = year)) +
+  geom_col(aes( y = UKLIFE*25000000000, fill="redfill")) +
+  geom_text(aes(y = UKLIFE*25000000000, label = UKLIFE) ,vjust = 1.4, color = "white", size =2.2,check_overlap = TRUE) +
+  geom_line(aes(y = UKGDP , group = 1, color = 'blackline')) +
+  geom_text(aes(y = UKGDP , label = round( UKGDP, 2)), vjust = 1.4, color = "blue", size = 2,check_overlap = TRUE) +
+  geom_point(aes(y = UKGDP))+
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . / 25000000000)) +
+  scale_fill_manual('', labels = 'UKLIFE', values = "#C00000") +
+  scale_color_manual('', labels = 'UKGDP', values = 'black') +
+  ggtitle("Relationship between GDP & Life expectancy of UK in 2007-2016")+
+  theme_minimal()
+```
+
+#### 以雙折線圖呈現
+
+```{r}
+
+library(ggplot2)
+ggplot(data_UK[48:57,], aes(x = year)) +
+  geom_line(aes(y = UKGDP , group = 1, color = 'UKGDP'))+
+  geom_text(aes(y = UKGDP, label = UKGDP),vjust = 1.4, color = "black", size = 3,check_overlap = TRUE) +
+  geom_point(aes(y = UKGDP))+
+  geom_line(aes(y= UKLIFE*25000000000,  group =1, color = 'UKLIFE'))+
+  geom_text(aes(y = UKLIFE*25000000000, label = UKLIFE), vjust = 1.4, color = "black", size = 2.5,check_overlap = TRUE) +
+  geom_point(aes(y= UKLIFE*25000000000))+
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ . / 25000000000)) +
+  ggtitle("Relationship between GDP & Life expectancy of UK in 2007-2016")+
+  theme_minimal()
+
+```
+
+### 由尼日圖表可以觀察到:雖然GDP偶有波動，但和Life expectancy大致呈現正相關；英國圖表卻很難觀察到這種現象，推測可能原因是英國為已開發國家，故關係較不明顯。
+
+## 三、固定年分
+### 找出兩者之間的關聯性─鎖定2016年，觀察264個國家之GDP & Life expectancy的關係:
+
+```{r}
+path3 = "D:/資料科學程式設計/data_science/week 2_0715/data/GDP.xlsx"
+path4 = "D:/資料科學程式設計/data_science/week 2_0715/data/life.xlsx"
+
+library(dplyr)
+library(readxl)
+m = read_excel(path3)
+n = read_excel(path4)
+
+GDP <- select(m,"Country Name","2016")
+LIFE <- select(n,"Country Name","2016")
+
+library(knitr)
+GDP_LIFE<-merge(GDP,LIFE, by="Country Name")
+colnames(GDP_LIFE)<-c("Country Name" ,"GDP","LIFE")
+kable(GDP_LIFE)
+
+```
+
+```{r}
+library(ggplot2)
+ggplot(GDP_LIFE,aes(x=log(GDP),y=LIFE))+
+  geom_point(aes(fill='country'),color="red")+
+  geom_smooth(method=lm)+
+  ggtitle("Relationship between GDP and Life expectancy in 2016")
+
+```
+
+### 由上圖發現GDP和Life expectancy呈現正相關，但這僅能說明Life expectancy的增加，有部份可能是因為GDP較高。
+
+## 四、進一步討論
+### HDI組成為"預期壽命指數"、"教育指數"、"收入指數"，鎖定2016年，觀察264個國家之GDP & HDI的關係
+
+```{r}
+path3 = "D:/資料科學程式設計/data_science/week 2_0715/data/GDP.xlsx"
+path5 = "D:/資料科學程式設計/data_science/week 2_0715/data/HDI.xlsx"
+
+library(dplyr)
+library(readxl)
+X = read_excel(path3)
+Y = read_excel(path5)
+
+GDP <- select(X,"Country Name","2016")
+HDI <- select(Y,"Country Name","2016")
+
+library(knitr)
+GDP_HDI<-merge(GDP,HDI, by="Country Name")
+colnames(GDP_HDI)<-c("Country Name" ,"GDP","HDI")
+kable(GDP_HDI)
+
+```
+
+```{r}
+library(ggplot2)
+ggplot(GDP_HDI,aes(x=log(GDP), y=HDI)) + 
+  geom_point(aes(fill='country'),color="red")+
+  geom_smooth(method=lm)+
+  ggtitle("Relationship between GDP and HDI in 2016")
+
+```
+
+### 結論 : 觀察GDP_LIFE和GDP_HDI兩張散佈圖，兩者均呈現"不完全正相關"。預期人均壽命或教育程度...提升會影響整個國家的生產力，使GDP上升，但逆向論述不一定正確，即GDP的提升(國家經濟發展程度越好)，不完全會使預期人均壽命上升，由GDP的組成也可得到類似的結論。
+
+
+## 五、綜合作圖:strip chart
+
+### 匯入資料
+```{r}
+path6 = "D:/資料科學程式設計/data_science/week 2_0715/data/GDP3.xlsx"
+path7 = "D:/資料科學程式設計/data_science/week 2_0715/data/life3.xlsx"
+
+library(dplyr)
+library(readxl)
+data11 = read_excel(path6)
+data12 = read_excel(path7)
+
+```
+
+### 264個國家2012-2016的GDP帶狀圖
+
+```{r}
+gdp_all<- select(data11,"Country Name",	"GDP",	"year")
+gdp_all
+
+#有遺失值無法繪製箱型圖和計算平均值
+library(ggplot2)
+ggplot(gdp_all, aes(x=year, y=GDP,group=year)) +
+  geom_jitter(position=position_jitter(0.2), cex=1.,color="red")+
+  ggtitle("GDP strip chart 2012-2016")
+
+```
+
+### 264個國家2012-2016的life expeatancy帶狀圖
+
+```{r}
+life_all<- select(data12,"Country Name",	"LIFE",	"year")
+life_all
+
+#有遺失值無法繪製箱型圖和計算平均值
+library(ggplot2)
+ggplot(life_all, aes(x=year, y=LIFE,group=year)) +
+  geom_jitter(position=position_jitter(0.2), cex=1.,color="red")+
+  ggtitle("Life Expeatancy strip chart 2012-2016")
+
+```
+
