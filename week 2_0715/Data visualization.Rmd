@@ -150,6 +150,8 @@ ggplot(GDP_LIFE,aes(x=log(GDP),y=LIFE))+
 ## 四、進一步討論
 ### HDI組成為"預期壽命指數"、"教育指數"、"收入指數"，鎖定2016年，觀察264個國家之GDP & HDI的關係
 
+data source3: https://www.kaggle.com/sudhirnl7/human-development-index-hdi
+
 ```{r}
 path3 = "D:/資料科學程式設計/data_science/week 2_0715/data/GDP.xlsx"
 path5 = "D:/資料科學程式設計/data_science/week 2_0715/data/HDI.xlsx"
