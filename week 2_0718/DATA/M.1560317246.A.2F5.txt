@@ -1,0 +1,38 @@
+作者xkmcandy (Mr.Ben)看板Finance標題[請益] Bloomberg跟Eikon資料庫使用感想時間Wed Jun 12 13:27:24 2019
+（代po)
+
+各位前輩好，小弟這陣子有幸錄取本土銀行總經研究員，主管人也不錯，時間上可以自己
+彈性安排自修課程。
+
+公司目前有Bloomberg跟Eikon資料庫，工作上可能比較常使用到Bloomberg較少使用到Eik
+on，但聽說後者的價錢更高，讓我想說不學白不學，該安排去上個課之類
+
+因此想請問如果單就想把這份工作做到高標準，先學習哪一種資料庫的使用會比較有幫助
+呢？畢竟時間雖然彈性但不是很多，希望能聽聽前輩的意見，謝謝
+
+--
+※ 發信站: 批踢踢實業坊(ptt.cc), 來自: 101.8.162.171 (臺灣)
+※ 文章網址: https://www.ptt.cc/bbs/Finance/M.1560317246.A.2F5.html
+推 AboveTheRim: bloomberg比較需要學  特殊功能太多了 06/12 13:29
+→ AboveTheRim: Eikon比較簡單   自己摸一摸就可以上手了 06/12 13:30
+推 salmon780510: 債券看Bloomberg,匯市看ekion 06/12 14:21
+推 Ethon: 建議學彭博   路透自學難度真的比較低一點  而且最近路透 06/12 14:48
+→ Ethon: 很常斷線   使用率可能會變低 06/12 14:48
+→ mnbvcxz1234: 兩個都建議學 Eikon的datastream很強大的 06/12 15:39
+→ xkmcandy: 謝謝各位大大 06/12 17:18
+→ narowang: Help desk is always there 06/12 18:29
+推 eddit: 路透最近真的超鳥... 06/12 19:44
+推 wadekimo: bbg比較貴 06/12 20:57
+推 Delisaac: 我自己覺得路透能做到的BBG幾乎都能  但反之不然 06/12 21:31
+推 sazabijiang: 很早以前路透最著名的大概就6165，後來也被取代了XD 06/12 22:26
+推 kria5304: 路透每天早上都要重開好幾次 超煩derr 06/13 00:04
+推 tirple: 當然是1啊 你若是buyside IB chat叫人做事就好 06/13 18:03
+推 KITAN: EIKON用起來的感覺蠻垃圾的 06/13 22:54
+→ blackboom: 工作上不會用到的去學完了之後你也沒線路用 06/14 01:38
+推 miracle210: 樓樓上專業 XDDDD 06/14 10:15
+推 Coolaler: 推Bloomberg的鍵盤！ 06/14 13:27
+推 jackyown: 反推Eikon的Dealing鍵盤 難用死 常用鍵還改位置 06/14 17:32
+推 shen7281: Bloomberg囉！比較好上手，還可以報名去他們家上課吃點 06/14 19:33
+→ shen7281: 心～ 06/14 19:33
+→ xkmcandy: 謝謝大大們～ 06/17 14:30
+

@@ -1,0 +1,280 @@
+---
+title: "Text Mining"
+author: "Rachel Chang"
+date: "2019/7/18"
+output: html_document
+---
+
+#### 動機 : 比較ptt-Finance版文章中前五個關鍵詞和文章間關聯性最高的詞差異。
+
+reference1 : https://ntu-csx-datascience.github.io/106-2RSampleCode/week_6/course_6/PTTBoyGirl.html
+
+reference2 : https://ntu-csx-datascience.github.io/1072-CSX4001-DataScience/CooccurrenceTextMining/TextMining.html?fbclid=IwAR3GLHyHmKw6xXwSH8g8S3-9xoRrZN2us79v7xHuy33z_7ZFwD1mqp-SU6E
+
+### 一、挑選近一個月的文章(220篇)，找出關鍵詞
+
+#### 安裝套件
+```{r}
+library(bitops)
+library(httr)
+library(RCurl)
+library(XML)
+library(tm)
+library(NLP)
+library(tmcn)
+library(jiebaRD)
+library(jiebaR)
+library(rvest)
+library(stringr)
+```
+
+#### PTT 網路爬蟲抓出所有文章內文所對應的網址
+
+```{r}
+from <- 1141 # 2018-06-01
+to   <- 1151 # 2018-07-10
+prefix = "https://www.ptt.cc/bbs/Finance/index"
+
+data <- list()
+for( id in c(from:to) )
+{
+  url  <- paste0( prefix, as.character(id), ".html" )
+  html <- htmlParse( GET(url) )
+  url.list <- xpathSApply( html, "//div[@class='title']/a[@href]", xmlAttrs )
+  data <- rbind( data, as.matrix(paste('https://www.ptt.cc', url.list, sep='')) )
+}
+data <- unlist(data)
+
+head(data)
+```
+
+#### 利用所有文章的網址去抓所有文章內文
+
+```{r}
+library(dplyr)
+library(RCurl)
+getdoc <- function(url) 
+{
+  html <- htmlParse(getURL(url))
+  doc  <- xpathSApply( html, "//div[@id='main-content']", xmlValue )
+  id <- substr(url,32,49)
+  name <- paste0('./DATA/', id, ".txt")
+  write(doc,name, append = TRUE)}
+
+sapply(head(data), getdoc)
+
+```
+
+#### 建立文本資料結構與基本文字清洗
+
+```{r}
+d.corpus <- Corpus( DirSource("./DATA") )
+d.corpus <- tm_map(d.corpus, removePunctuation)
+d.corpus <- tm_map(d.corpus, removeNumbers)
+d.corpus <- tm_map(d.corpus, function(word) {
+    gsub("[A-Za-z0-9]", "", word)
+})
+head(d.corpus)
+
+```
+
+#### 進行斷詞，並建立文本矩陣 TermDocumentMatrix
+
+```{r}
+mixseg = worker()
+jieba_tokenizer = function(k)
+{
+  unlist( segment(k[[1]], mixseg) )
+}
+seg = lapply(d.corpus, jieba_tokenizer)
+
+count_token = function(k)
+{
+  as.data.frame(table(k))
+}
+tokens = lapply(seg, count_token)
+
+n = length(seg)
+TDM = tokens[[1]]
+colNames <- names(seg)
+colNames <- gsub(".txt", "", colNames)
+for( ids in c(2:n) )
+{
+  TDM = merge(TDM, tokens[[ids]], by="k", all = TRUE)
+  names(TDM) = c('k', colNames[1:ids])
+}
+TDM[is.na(TDM)] <- 0
+library(knitr)
+kable(head(TDM))
+
+kable(tail(TDM))
+
+```
+
+#### 將已建好的 TDM 轉成 TF-IDF
+
+```{r}
+tf <- apply(as.matrix(TDM[,2:(n+1)]), 2, sum)
+
+library(Matrix)
+idfCal <- function(word_doc)
+{ 
+  log2( n / nnzero(word_doc) ) 
+}
+idf <- apply(as.matrix(TDM[,2:(n+1)]), 1, idfCal)
+
+doc.tfidf <- TDM
+
+tempY = matrix(rep(c(as.matrix(tf)), each = length(idf)), nrow = length(idf))
+tempX = matrix(rep(c(as.matrix(idf)), each = length(tf)), ncol = length(tf), byrow = TRUE)
+doc.tfidf[,2:(n+1)] <- (doc.tfidf[,2:(n+1)] / tempY) * tempX
+
+stopLine <- rowSums(doc.tfidf[,2:220])
+delID <- which(stopLine == 0)
+
+kable(head(doc.tfidf[delID,1]))
+
+kable(tail(doc.tfidf[delID,1]))
+
+TDM[is.na(TDM)] <- 0
+library(knitr)
+kable(head(TDM))
+
+```
+
+#### 以TDM 畫出關聯圖
+```{r}
+CoMatrix = as.matrix(TDM[,3:221]) %*% t(as.matrix(TDM[,3:221]))
+total_occurrences <- rowSums(CoMatrix)
+smallid = which(total_occurrences < median(total_occurrences))
+co_occurrence_d = CoMatrix / total_occurrences
+co_occurrence_s = co_occurrence_d[-as.vector(smallid),-as.vector(smallid)]
+
+require(igraph)
+graph <- graph.adjacency(round(co_occurrence_s*10),
+                         diag=FALSE, mode="undirected")
+
+plot(graph,
+     label.color =NULL,
+     vertex.color = "SkyBlue2",
+     vertex.label=names(TDM[,3]),
+     edge.arrow.mode=20,
+     vertex.size=10,
+     edge.width=E(graph)$weight,
+     layout=layout_with_fr)
+
+```
+
+#### 以doc.tfidf 畫出關聯圖
+```{r}
+CoMatrix1 = as.matrix(doc.tfidf[,3:221]) %*% t(as.matrix(doc.tfidf[,3:221]))
+total_occurrences1 <- rowSums(CoMatrix1)
+smallid = which(total_occurrences1 < median(total_occurrences1))
+co_occurrence_d1 = CoMatrix1 / total_occurrences1
+co_occurrence_s1 = co_occurrence_d1[-as.vector(smallid),-as.vector(smallid)]
+
+require(igraph)
+graph1 <- graph.adjacency(round(co_occurrence_s1*10),
+                         diag=FALSE, mode="undirected")
+
+
+plot(graph1,
+     label.color =NULL,
+     vertex.color = "SkyBlue2",
+     edge.arrow.mode=20,
+     vertex.size=10,
+     edge.width=E(graph1)$weight,
+     layout=layout_with_fr)
+
+```
+
+**刪除非慣用字詞後，doc.tfidf 關聯圖的節點應較TDM關聯圖密集。(註:關聯圖的呈現須修正)**
+
+#### TF-IDF 文章取得的重要關鍵字(每篇文章都取出前十個關鍵字)
+```{r}
+TopWords = data.frame()
+for( id in c(1:n) )
+{
+  dayMax = order(doc.tfidf[,id+1], decreasing = TRUE)
+  showResult = t(as.data.frame(doc.tfidf[dayMax[1:10],1]))
+  TopWords = rbind(TopWords, showResult)
+}
+rownames(TopWords) = colnames(doc.tfidf)[2:(n+1)]
+TopWords = droplevels(TopWords)
+kable(head(TopWords))
+```
+
+#### TF-IDF 文章取得的重要關鍵字 
+```{r}
+TDM$k = as.character(TDM$k)
+AllTop = as.data.frame( table(as.matrix(TopWords)) )
+AllTop = AllTop[order(AllTop$Freq, decreasing = TRUE),]
+
+kable(head(AllTop))
+
+kable(tail(AllTop))
+```
+
+#### 前十個字頻長條圖
+```{r}
+library(ggplot2)
+worddata <- head(AllTop,10)
+ggplot(worddata, aes(x=Var1,y=Freq))+
+  geom_bar(stat="identity",fill="steelblue",width=0.5)+
+  coord_flip()+
+  theme_minimal()
+
+```
+
+### 由220篇文章中的前十個慣用字，推測在Finance版談論的民眾大部分嚮往銀行的工作，第一商業銀行(一銀)、中信、玉山、合庫四家銀行為其中四個關鍵字，可能也會想到外地工作(上海)，版上也會交換面試、實習相關經驗，Finance版符合商學院的主要出路。
+
+#### 由AllTop畫出文字雲
+```{r}
+library("tm")
+library("SnowballC")
+library("wordcloud")
+library("RColorBrewer")
+
+wordcloud(words = AllTop$Var1, freq = AllTop$Freq,
+          max.words=200, random.order=FALSE, rot.per=0.3, 
+          colors=brewer.pal(7, "Dark2"))
+
+```
+
+### 二、從220篇文章中歸納彼此相關性最高的關鍵詞
+
+#### TF-IDF:與前面步驟相同，但是不轉置
+```{r}
+TopWords = data.frame()
+for( id in c(1:n) )
+{
+  dayMax = order(doc.tfidf[,id+1], decreasing = TRUE)
+  showResult = as.data.frame(doc.tfidf[dayMax[1:10],])
+  TopWords = rbind(TopWords, showResult)
+}
+colnames(TopWords) = rownames(doc.tfidf)[1:221]
+TopWords = droplevels(TopWords)
+kable(head(TopWords))
+```
+
+#### 每一列各自相加，詞對應的數字是220篇文章共同出現的頻率大小
+```{r}
+wordfreq <- rowSums( TopWords[,2:221] )
+kable(head(wordfreq,10))
+```
+
+#### 將出現的頻率大小進行排序
+```{r}
+freq_arranged <- sort(wordfreq,decreasing=T)
+kable(head(freq_arranged,35))
+```
+
+#### 找出文章間關聯最大的五個詞
+
+```{r}
+TDM[c(419,133,740,898,1378),1]
+
+```
+
+### 結論 : 由一、知道ptt-Finance版文章中主要關鍵詞為:分行、面試、通知、合庫、玉山、中信；而這些文章間關聯性最大的詞為:面試、 編輯、推有、玉山、通知。可以推論群眾討論的話題主要是面試經驗，只因部分民眾在某幾篇文章中談論到銀行，才使關鍵詞產生變化。
+
