@@ -20,7 +20,7 @@
 
  ### [Week 2_07/15](https://github.com/Rachel0718/data_science/tree/master/week%202_0715)
 
- ### Week 2_07/18
+ ### [Week 2_07/18](https://github.com/Rachel0718/data_science/tree/master/week%202_0718)
 
  ### Week 3_07/22
 
