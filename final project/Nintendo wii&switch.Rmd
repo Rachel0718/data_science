@@ -1,0 +1,197 @@
+---
+title: "Nintendo wii&switch"
+author: "Rachel Chang"
+date: "2019/7/23"
+output: html_document
+---
+
+data source1 : https://zh.wikipedia.org/wiki/%E4%BB%BB%E5%A4%A9%E5%A0%82Switch
+
+data source2 : https://zh.wikipedia.org/wiki/Wii
+
+**安裝套件**
+```{r}
+library(bitops)
+library(httr)
+library(RCurl)
+library(XML)
+library(tm)
+library(NLP)
+library(tmcn)
+library(jiebaRD)
+library(jiebaR)
+library(rvest)
+library(stringr)
+```
+
+## Nintendo wii (2008.7.12在台販售)
+
+### 一、爬出ptt-Nswitch版(原稱wii版)文章標題
+
+```{r}
+library(rvest)
+library(magrittr)
+
+pttwii <- data.frame()
+
+for(id in 171:142) #2008.5.1-2008.12.28
+{
+  prefix <- "https://www.ptt.cc/bbs/NSwitch/search?page="
+  url  <- paste0( prefix, as.character(id), "&q=wii" )
+  
+  wii <- read_html(url)
+  post_title <- wii%>% 
+    html_nodes(".title") %>%
+    html_text()
+  post_date <- wii %>% 
+    html_nodes(".date") %>%
+    html_text()  
+ 
+  pttwii<- rbind(pttwii, data.frame(title= post_title,
+                                            date= post_date))
+}
+
+library(knitr)
+kable(head(pttwii))
+
+```
+
+### 二、依照month合併儲存
+
+**遇到的困難:1.如何依照月份儲存資料/2.factor->string**
+```{r}
+library(dplyr)
+library(lubridate)
+wii_data <- pttwii %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+
+library(knitr)
+kable(head(wii_data))
+
+wii_2008<-wii_data%>%count(month)
+wii_2008
+
+```
+
+### 三、作圖
+
+```{r}
+
+w <- wii_2008 
+colnames(w) <- c("month", "posts")
+w
+
+library(ggplot2)
+ggplot(data=w, aes(x=month,y=posts))+
+       geom_bar(stat="identity",width=0.5)+
+       ggtitle("ptt posts of wii in 2008")+
+       geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
+
+```
+
+
+## Nintendo switch (2017.12.1 在台販售)
+
+### 一、爬出ptt-Nswitch版文章標題
+
+```{r}
+from <- 41 #2017.10
+to   <- 29 #2018.3 
+prefix = "https://www.ptt.cc/bbs/NSwitch/search?page="
+
+switchdata <- list()
+for( idm in c(from:to) )
+{
+  url  <- paste0( prefix, as.character(idm), "&q=switch" )
+  html <- htmlParse( GET(url) )
+  url.list <- xpathSApply( html, "//div[@class='title']/a[@href]", xmlAttrs )
+  switchdata <- rbind( switchdata, as.matrix(paste('https://www.ptt.cc', url.list, sep='')) )
+}
+switchdata <- unlist(switchdata)
+
+head(switchdata)
+```
+
+```{r}
+library(dplyr)
+library(RCurl)
+
+switch <- data.frame() 
+
+for(idm in 1:260){
+  
+  url <-switchdata[idm]
+  html <- read_html(url)
+  title <- html %>%     
+    html_node(".article-metaline-right+ .article-metaline .article-meta-value") %>%
+    html_text
+  date <- html%>% 
+    html_node(".article-metaline+ .article-metaline .article-meta-value") %>%
+    html_text
+  switch <- rbind(switch, data.frame(title, date))
+}
+head(switch)
+
+```
+
+
+### 二、依照year_month合併儲存
+
+**遇到的困難:符號轉換->使用substr函數**
+
+```{r}
+
+s1<-substr(switch$date,5,7)
+kable(head(s1))
+s2<-substr(switch$date,23,24)
+kable(head(s2))
+
+u <- c("Jan"="01","Feb"="02","Mar"="03","Apr"="04","May"="05","Jun"="06","Jul"="07","Aug"="08","Sep"="09","Oct"=10,"Nov"=11,"Dec"=12)
+
+switch_2017<-paste(s2,u[s1])
+kable(head(switch_2017))
+
+```
+
+**遇到的困難:轉換成dataframe**
+
+```{r}
+library(plyr)
+Nswitch<-table(switch_2017)
+head(as.data.frame(Nswitch)) # 本質上還是table，需要assign回去
+
+Nswitch <- table(switch_2017)
+Nswitch <- data.frame(Nswitch) #assign
+head(Nswitch)
+
+```
+
+### 四、作圖
+
+```{r}
+
+Nswitch_2017 <- Nswitch
+colnames(Nswitch_2017) <- c("time", "posts")
+head(Nswitch_2017)
+
+
+library(ggplot2)
+ggplot(Nswitch_2017, aes(x=time,y=posts))+
+       geom_bar(stat="identity",width=0.5)+
+       ggtitle("ptt posts of Nswitch from 2017.10 to 2018.3")+
+       geom_text(aes(label=posts),vjust=1.6, color="white", size=3.5)
+       
+
+```
+
+
+### 結論:遊戲類產品週期較手機不明顯，可能原因是有周邊產品和遊戲同時推出引起討論，以任天堂推出的兩款手遊機台為例。而在wii和switch當中，wii除了在台上市當月討論度較高之外，因為有同時發售許多遊戲，所以其他月份也有許多人關注；2017推出的switch比較明顯可以看出熱潮持續將近四個月，事後查資料發現可能是因為首發推出遊戲過少、配備昂貴導致銷量和討論度都比2006的wii略低一些。
+
+
+
+
+
+
+
