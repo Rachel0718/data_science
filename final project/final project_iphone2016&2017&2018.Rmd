@@ -1,0 +1,274 @@
+---
+title: "final project_iphone2016&2017&2018"
+author: "Rachel Chang"
+date: "2019/7/22"
+output: html_document
+---
+
+安裝套件
+```{r}
+library(bitops)
+library(httr)
+library(RCurl)
+library(XML)
+library(tm)
+library(NLP)
+library(tmcn)
+library(jiebaRD)
+library(jiebaR)
+library(rvest)
+library(stringr)
+```
+
+#### 2018-9 iPhone XS,iPhone XS MAX,iPhone XR
+ 
+一、爬出ptt-iphone-mobliecomm文章標題
+
+**遇到的困難:1.如何使用迴圈抓取25-73的網頁標題?/2.抓取非html網址
+```{r}
+library(magrittr)
+library(rvest)
+
+pttMobileComm <- data.frame()
+
+for(id in 73:25) #2018.6.17-2018.12.30
+{
+  prefix <- "https://www.ptt.cc/bbs/MobileComm/search?page="
+  url  <- paste0( prefix, as.character(id), "&q=iphone" )
+  
+  iphone <- read_html(url)
+  post_title <- iphone%>% 
+    html_nodes(".title") %>%
+    html_text()
+  post_date <- iphone %>% 
+    html_nodes(".date") %>%
+    html_text()  
+ 
+  pttMobileComm <- rbind(pttMobileComm, data.frame(title= post_title,
+                                                    date= post_date))
+}
+
+pttMobileComm
+library(knitr)
+kable(pttMobileComm)
+
+```
+
+二、統計所有文章標題有提到iPhone XS,iPhone XS MAX,iPhone XR的數量(dataframe)
+
+**遇到的困難:1.篩選標題grepl/2.忽略大小寫ignore.case=TRUE
+```{R}
+library(jiebaRD)
+library(jiebaR)
+
+cutter <- worker("tag")
+
+# 自建字典
+dic = c("iPhone XS","iPhone XS MAX", "iPhone XR")
+new_user_word(cutter, dic)
+
+a <- sapply(dic, grepl, pttMobileComm$title, ignore.case=TRUE)
+b <- apply(a, 1, any)
+pttMobileComm[b,]
+library(knitr)
+kable(pttMobileComm[b,])
+
+```
+
+三、依照month合併儲存(6-12月)
+
+**遇到的困難:1.如何依照月份儲存資料/2.factor->string
+```{r}
+library(dplyr)
+library(lubridate)
+iphone_data <- pttMobileComm[b,] %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+
+library(knitr)
+kable(iphone_data)
+
+iphone_data1<-iphone_data%>%count(month)
+iphone_2018 <- iphone_data1[-c(1),] 
+iphone_2018 
+
+
+```
+
+四、作圖(呈現熱潮週期)
+```{r}
+
+t <- iphone_2018 
+colnames(t) <- c("month", "posts")
+t
+
+library(ggplot2)
+ggplot(data=t, aes(x=month,y=posts))+
+       geom_bar(stat="identity",width=0.5)+
+       ggtitle("ptt posts of new iphone in 2018")+
+       geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
+
+```
+
+#### 2017-9 iPhone X,iPhone 8,iphone 8 plus
+ 
+一、爬出ptt-iphone-mobliecomm文章標題
+
+**遇到的困難:1.如何使用迴圈抓取25-73的網頁標題?/2.抓取非html網址
+```{r}
+library(magrittr)
+library(rvest)
+
+pttMobileComm_1 <- data.frame()
+
+for(ids in 145:95) #2017.6.11-2017.12.30
+{
+  prefix <- "https://www.ptt.cc/bbs/MobileComm/search?page="
+  url  <- paste0( prefix, as.character(ids), "&q=iphone" )
+  
+  iphone <- read_html(url)
+  post_title <- iphone%>% 
+    html_nodes(".title") %>%
+    html_text()
+  post_date <- iphone %>% 
+    html_nodes(".date") %>%
+    html_text()  
+ 
+  pttMobileComm_1 <- rbind(pttMobileComm_1, data.frame(title= post_title,
+                                                    date= post_date))
+}
+
+pttMobileComm_1
+library(knitr)
+kable(pttMobileComm_1)
+
+```
+
+二、統計所有文章標題有提到iPhone X,iPhone 8,iphone 8 plus的數量(dataframe)
+
+**遇到的困難:1.篩選標題grepl/2.忽略大小寫ignore.case=TRUE
+```{R}
+library(jiebaRD)
+library(jiebaR)
+
+cutter <- worker("tag")
+
+# 自建字典
+dic1 = c("iPhone X","iPhone 8","iphone 8 plus")
+new_user_word(cutter, dic1)
+
+a1 <- sapply(dic1, grepl, pttMobileComm_1$title, ignore.case=TRUE)
+b1 <- apply(a1, 1, any)
+pttMobileComm_1[b1,]
+library(knitr)
+kable(pttMobileComm_1[b1,])
+
+```
+
+
+三、依照month合併儲存(6-12月)
+
+**遇到的困難:1.如何依照月份儲存資料/2.factor->string
+```{r}
+library(dplyr)
+library(lubridate)
+iphone_data2 <- pttMobileComm_1[b1,] %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+
+library(knitr)
+kable(iphone_data2)
+
+iphone_data3<-iphone_data2%>%count(month)
+iphone_2017 <- iphone_data3[-c(1),] 
+iphone_2017 
+
+```
+
+四、作圖(呈現熱潮週期)
+```{r}
+
+i <- iphone_2017
+colnames(i) <- c("month", "posts")
+i
+
+library(ggplot2)
+ggplot(data=i, aes(x=month,y=posts))+
+       geom_bar(stat="identity",width=0.5)+
+       ggtitle("ptt posts of new iphone in 2017")+
+       geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
+
+```
+
+#### 2016-9 iPhone 7、iPhone 7 Plus (不須挑字)
+ 
+一、爬出ptt-iphone-mobliecomm文章標題
+
+**遇到的困難:1.如何使用迴圈抓取25-73的網頁標題?/2.抓取非html網址
+```{r}
+library(magrittr)
+library(rvest)
+
+pttMobileComm_2 <- data.frame()
+
+for(idd in 15:8) #2018.8.02-2018.12.27
+{
+  prefix <- "https://www.ptt.cc/bbs/MobileComm/search?page="
+  url  <- paste0( prefix, as.character(idd), "&q=iphone7" )
+  
+  iphone <- read_html(url)
+  post_title <- iphone%>% 
+    html_nodes(".title") %>%
+    html_text()
+  post_date <- iphone %>% 
+    html_nodes(".date") %>%
+    html_text()  
+ 
+  pttMobileComm_2 <- rbind(pttMobileComm_2, data.frame(title= post_title,
+                                                    date= post_date))
+}
+
+pttMobileComm_2
+library(knitr)
+kable(pttMobileComm_2)
+
+```
+
+
+三、依照month合併儲存(6-12月)
+
+**遇到的困難:1.如何依照月份儲存資料/2.factor->string
+```{r}
+library(dplyr)
+library(lubridate)
+iphone_data4 <- pttMobileComm_2 %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+
+library(knitr)
+kable(iphone_data4)
+
+iphone_data5<-iphone_data4%>%count(month)
+iphone_2016 <- iphone_data5[-c(1:6),] 
+iphone_2016
+
+```
+
+四、作圖(呈現熱潮週期)
+```{r}
+
+j <- iphone_2016
+colnames(j) <- c("month", "posts")
+j
+
+library(ggplot2)
+ggplot(data=j, aes(x=month,y=posts))+
+       geom_bar(stat="identity",width=0.5)+
+       ggtitle("ptt posts of new iphone in 2017")+
+       geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
+
+```
+
