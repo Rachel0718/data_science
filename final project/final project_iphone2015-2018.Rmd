@@ -1,5 +1,5 @@
 ---
-title: "final project_iphone2016&2017&2018"
+title: "final project_iphone2015-2018"
 author: "Rachel Chang"
 date: "2019/7/22"
 output: html_document
@@ -20,13 +20,14 @@ library(rvest)
 library(stringr)
 ```
 
-## 2018-9 iPhone XS,iPhone XS MAX,iPhone XR
+## 2018-9-12 iPhone XS,iPhone XS MAX；2018-10-26 iPhone XR
  
 ### 一、爬出ptt-iphone-mobliecomm文章標題
 
-**遇到的困難:1.如何使用迴圈抓取25-73的網頁標題?/2.抓取非html網址**
+**遇到的困難:1.如何使用迴圈抓網頁標題?/2.抓取非html網址**
 ```{r}
 library(rvest)
+library(magrittr)
 
 pttMobileComm <- data.frame()
 
@@ -85,7 +86,7 @@ iphone_data <- pttMobileComm[b,] %>%
 library(knitr)
 kable(head(iphone_data))
 
-iphone_data1<-iphone_data%>%count(month)
+iphone_data1<-iphone_data%>%count("month")
 iphone_2018 <- iphone_data1[-c(1),] 
 iphone_2018 
 
@@ -102,17 +103,17 @@ t
 library(ggplot2)
 ggplot(data=t, aes(x=month,y=posts))+
        geom_bar(stat="identity",width=0.5)+
-       ggtitle("ptt posts of new iphone in 2018")+
+       ggtitle("ptt posts of new iphone in 2018 about iPhone XS,iPhone XS MAX,iPhone XR")+
        geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
        
 
 ```
 
-## 2017-9 iPhone X,iPhone 8,iphone 8 plus
+## 2017-9-12 iPhone 8,iphone 8 plus；2017-11-3 iPhone X
  
 ### 一、爬出ptt-iphone-mobliecomm文章標題
 
-**遇到的困難:1.如何使用迴圈抓取25-73的網頁標題?/2.抓取非html網址**
+**遇到的困難:1.如何使用迴圈抓網頁標題?/2.抓取非html網址**
 ```{r}
 library(magrittr)
 library(rvest)
@@ -176,7 +177,7 @@ iphone_data2 <- pttMobileComm_1[b1,] %>%
 library(knitr)
 kable(head(iphone_data2))
 
-iphone_data3<-iphone_data2%>%count(month)
+iphone_data3<-iphone_data2%>%count("month")
 iphone_2017 <- iphone_data3[-c(1:3),] 
 iphone_2017 
 
@@ -192,24 +193,24 @@ i
 library(ggplot2)
 ggplot(data=i, aes(x=month,y=posts))+
        geom_bar(stat="identity",width=0.5)+
-       ggtitle("ptt posts of new iphone in 2017")+
+       ggtitle("ptt posts of new iphone in 2017 about iPhone X,iPhone 8,iphone 8 plus")+
        geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
        
 
 ```
 
-## 2016-9 iPhone 7、iPhone 7 Plus (不須挑字)
+## 2016-9-7 iPhone 7,iPhone 7 Plus 
  
 ### 一、爬出ptt-iphone-mobliecomm文章標題
 
-**遇到的困難:1.如何使用迴圈抓取25-73的網頁標題?/2.抓取非html網址**
+**遇到的困難:1.如何使用迴圈抓網頁標題?/2.抓取非html網址**
 ```{r}
 
 library(rvest)
 
 pttMobileComm_2 <- data.frame()
 
-for(idd in 15:8) #2018.8.02-2018.12.27
+for(idd in 15:8) #2016.6.7-2016.12.27
 {
   prefix <- "https://www.ptt.cc/bbs/MobileComm/search?page="
   url  <- paste0( prefix, as.character(idd), "&q=iphone7" )
@@ -245,7 +246,7 @@ iphone_data4 <- pttMobileComm_2 %>%
 library(knitr)
 kable(head(iphone_data4))
 
-iphone_data5<-iphone_data4%>%count(month)
+iphone_data5<-iphone_data4%>%count("month")
 iphone_2016 <- iphone_data5[-c(1:6),] 
 iphone_2016
 
@@ -261,9 +262,148 @@ j
 library(ggplot2)
 ggplot(data=j, aes(x=month,y=posts))+
        geom_bar(stat="identity",width=0.5)+
-       ggtitle("ptt posts of new iphone in 2016")+
+       ggtitle("ptt posts of new iphone in 2016.9 about iPhone 7,iPhone 7 Plus")+
        geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
        
 
 ```
 
+## 2016-3-21 iPhone SE
+
+### 一、爬出ptt-iphone-mobliecomm文章標題
+
+**遇到的困難:1.如何使用迴圈抓網頁標題?/2.抓取非html網址**
+```{r}
+
+library(rvest)
+
+pttMobileComm_3 <- data.frame()
+
+for(iD in 11:5) #2016.3.13-2016.8.25
+{
+  prefix <- "https://www.ptt.cc/bbs/MobileComm/search?page="
+  url  <- paste0( prefix, as.character(iD), "&q=iphone+se" )
+  
+  iphone <- read_html(url)
+  post_title <- iphone%>% 
+    html_nodes(".title") %>%
+    html_text()
+  post_date <- iphone %>% 
+    html_nodes(".date") %>%
+    html_text()  
+ 
+  pttMobileComm_3 <- rbind(pttMobileComm_3, data.frame(title= post_title,
+                                                    date= post_date))
+}
+
+library(knitr)
+kable(head(pttMobileComm_3))
+
+```
+
+### 二、依照month合併儲存
+
+**遇到的困難:1.如何依照月份儲存資料/2.factor->string**
+```{r}
+library(magrittr)
+library(dplyr)
+library(lubridate)
+iphone_data5 <- pttMobileComm_3 %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+
+library(knitr)
+kable(head(iphone_data5))
+
+iphone_data6 <-iphone_data5 %>% count("month")
+iphone_data6
+
+```
+
+### 三、作圖(呈現熱潮週期)
+```{r}
+
+iphone_2016_3 <- iphone_data6
+colnames(iphone_2016_3) <- c("month", "posts")
+iphone_2016_3
+
+library(ggplot2)
+ggplot(data=iphone_2016_3, aes(x=month,y=posts))+
+       geom_bar(stat="identity",width=0.5)+
+       ggtitle("ptt posts of new iphone in 2016.3 about iPhone SE")+
+       geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
+
+```
+
+## 2015-9-25 iPhone 6s,iPhone 6s plus
+
+### 一、爬出ptt-iphone-mobliecomm文章標題
+
+**遇到的困難:1.如何使用迴圈抓網頁標題?/2.抓取非html網址**
+```{r}
+
+library(rvest)
+
+pttMobileComm_4 <- data.frame()
+
+for(iD in 19:11) #2015.8.11-2015.12.30
+{
+  prefix <- "https://www.ptt.cc/bbs/MobileComm/search?page="
+  url  <- paste0( prefix, as.character(iD), "&q=iphone+6s" )
+  
+  iphone <- read_html(url)
+  post_title <- iphone%>% 
+    html_nodes(".title") %>%
+    html_text()
+  post_date <- iphone %>% 
+    html_nodes(".date") %>%
+    html_text()  
+ 
+  pttMobileComm_4 <- rbind(pttMobileComm_4, data.frame(title= post_title,
+                                                    date= post_date))
+}
+
+library(knitr)
+kable(head(pttMobileComm_4))
+
+```
+
+### 二、依照month合併儲存
+
+**遇到的困難:1.如何依照月份儲存資料/2.factor->string**
+```{r}
+library(magrittr)
+library(dplyr)
+library(lubridate)
+iphone_data7 <- pttMobileComm_4 %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+
+library(knitr)
+kable(head(iphone_data7))
+
+iphone_data8 <-iphone_data7 %>% count("month")
+iphone_2015 <- iphone_data8[-c(1:4),] 
+iphone_2015 
+
+```
+
+
+### 三、作圖(呈現熱潮週期)
+```{r}
+
+colnames(iphone_2015) <- c("month", "posts")
+iphone_2015
+
+library(ggplot2)
+ggplot(data=iphone_2015, aes(x=month,y=posts))+
+       geom_bar(stat="identity",width=0.5)+
+       ggtitle("ptt posts of new iphone in 2015 about iPhone 6s,iPhone 6s plus")+
+       geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
+
+```
+
+
+### 結論:2007-2015都是每年推出一次，觀察2015年，熱潮持續近2個月。2016年，3月先推出iphone SE，隔半年才推出另一系列iphone7&7+，推出日期不太接近，只有在上市當月引起討論，不易形成一股風潮。發現推出新手機款式的日期越接近(如2017&2018年)，因為互相比較，會引發群眾討論，話題熱潮長-大概持續2-3個月，話題討論數量也比較多。
