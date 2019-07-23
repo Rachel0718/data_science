@@ -1,5 +1,5 @@
 ---
-title: "final project_iphone2015-2018"
+title: "final project iphone2015-2018"
 author: "Rachel Chang"
 date: "2019/7/22"
 output: html_document
@@ -86,7 +86,7 @@ iphone_data <- pttMobileComm[b,] %>%
 library(knitr)
 kable(head(iphone_data))
 
-iphone_data1<-iphone_data%>%count("month")
+iphone_data1<-iphone_data%>%count(month)
 iphone_2018 <- iphone_data1[-c(1),] 
 iphone_2018 
 
@@ -105,6 +105,7 @@ ggplot(data=t, aes(x=month,y=posts))+
        geom_bar(stat="identity",width=0.5)+
        ggtitle("ptt posts of new iphone in 2018 about iPhone XS,iPhone XS MAX,iPhone XR")+
        geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
        
 
 ```
@@ -177,7 +178,7 @@ iphone_data2 <- pttMobileComm_1[b1,] %>%
 library(knitr)
 kable(head(iphone_data2))
 
-iphone_data3<-iphone_data2%>%count("month")
+iphone_data3<-iphone_data2%>%count(month)
 iphone_2017 <- iphone_data3[-c(1:3),] 
 iphone_2017 
 
@@ -195,6 +196,7 @@ ggplot(data=i, aes(x=month,y=posts))+
        geom_bar(stat="identity",width=0.5)+
        ggtitle("ptt posts of new iphone in 2017 about iPhone X,iPhone 8,iphone 8 plus")+
        geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
        
 
 ```
@@ -246,7 +248,7 @@ iphone_data4 <- pttMobileComm_2 %>%
 library(knitr)
 kable(head(iphone_data4))
 
-iphone_data5<-iphone_data4%>%count("month")
+iphone_data5<-iphone_data4%>%count(month)
 iphone_2016 <- iphone_data5[-c(1:6),] 
 iphone_2016
 
@@ -264,6 +266,7 @@ ggplot(data=j, aes(x=month,y=posts))+
        geom_bar(stat="identity",width=0.5)+
        ggtitle("ptt posts of new iphone in 2016.9 about iPhone 7,iPhone 7 Plus")+
        geom_text(aes(label=posts), vjust=1.6, color="white", size=3.5)
+       
        
 
 ```
@@ -315,7 +318,7 @@ iphone_data5 <- pttMobileComm_3 %>%
 library(knitr)
 kable(head(iphone_data5))
 
-iphone_data6 <-iphone_data5 %>% count("month")
+iphone_data6 <-iphone_data5 %>% count(month)
 iphone_data6
 
 ```
@@ -383,7 +386,7 @@ iphone_data7 <- pttMobileComm_4 %>%
 library(knitr)
 kable(head(iphone_data7))
 
-iphone_data8 <-iphone_data7 %>% count("month")
+iphone_data8 <-iphone_data7 %>% count(month)
 iphone_2015 <- iphone_data8[-c(1:4),] 
 iphone_2015 
 
