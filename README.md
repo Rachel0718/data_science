@@ -26,6 +26,6 @@
 
  ### Week 3_07/25
 
-## Final Project
+## [Final Project](https://github.com/Rachel0718/data_science/tree/master/final%20project)
 
 
