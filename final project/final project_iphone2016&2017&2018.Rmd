@@ -57,7 +57,7 @@ kable(pttMobileComm)
 二、統計所有文章標題有提到iPhone XS,iPhone XS MAX,iPhone XR的數量(dataframe)
 
 **遇到的困難:1.篩選標題grepl/2.忽略大小寫ignore.case=TRUE
-```{R}
+```{r}
 library(jiebaRD)
 library(jiebaR)
 
@@ -148,7 +148,7 @@ kable(pttMobileComm_1)
 二、統計所有文章標題有提到iPhone X,iPhone 8,iphone 8 plus的數量(dataframe)
 
 **遇到的困難:1.篩選標題grepl/2.忽略大小寫ignore.case=TRUE
-```{R}
+```{r}
 library(jiebaRD)
 library(jiebaR)
 
