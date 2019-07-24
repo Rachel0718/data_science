@@ -1,0 +1,237 @@
+---
+title: "Avenger4"
+author: "TYTso"
+date: "2019/7/24"
+output: html_document
+---
+**套件**
+```{r}
+library(rvest)
+library(tidyverse)
+```
+
+## PTT-Movie版2019年復仇者聯盟4之討論熱度
+
+###《復仇者聯盟：終局之戰》(註:復仇者聯盟4)是一部於2019年上映(註:台灣時間2019-04-24)的美國史詩超級英雄電影，改編自漫威漫畫旗下的超級英雄團隊復仇者聯盟，由漫威影業製作及華特迪士尼工作室電影發行
+資料來源:https://zh.wikipedia.org/zh-tw/%E5%BE%A9%E4%BB%87%E8%80%85%E8%81%AF%E7%9B%9F%EF%BC%9A%E7%B5%82%E5%B1%80%E4%B9%8B%E6%88%B0
+
+### Movie版搜尋關鍵字復4
+```{r}
+pttmoav4<-data.frame()
+
+library(rvest)
+for(id in 1:37)
+{
+  moav4 <- "https://www.ptt.cc/bbs/movie/search?page="
+  url  <- paste0(moav4, as.character(id), "&q=復4" )
+  
+  postmoav4 <- read_html(url)
+  post_title <- postmoav4%>% 
+    html_nodes(".title a") %>%
+    html_text()
+  post_date <- postmoav4%>% 
+    html_nodes(".date") %>%
+    html_text()  
+  
+  pttmoav4 <- rbind(pttmoav4, data.frame(title= post_title,
+                                                 date= post_date))
+    pttmoav<-pttmoav4[-714:-731,]
+ 
+}
+```
+### Movie版搜尋關鍵字復仇者聯盟4(2019年)
+```{r}
+pttmovieav4<-data.frame()
+
+library(rvest)
+for(id in 1:20)
+{
+  nbakawhi <- "https://www.ptt.cc/bbs/movie/search?page="
+  url  <- paste0( nbakawhi, as.character(id), "&q=復仇者聯盟4" )
+  
+  movieav4 <- read_html(url)
+  post_title <- movieav4%>% 
+    html_nodes(".title a") %>%
+    html_text()
+  post_date <- movieav4%>% 
+    html_nodes(".date") %>%
+    html_text()  
+  
+  pttmovieav4 <- rbind(pttmovieav4, data.frame(title= post_title,
+                                                 date= post_date))
+  pttmovieav<-pttmovieav4[-397:-400,]
+}
+```
+
+```{r}
+pttmovieav<-pttmovieav4[-397:-400,]
+library(dplyr)
+library(lubridate)
+avdata <- pttmoav %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+avmonc<-count(avdata,month)
+
+avdata2 <- pttmovieav %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+avmonc2<-count(avdata2,month)
+
+d<-merge(avmonc,avmonc2, by = "month", all = T)
+d[is.na(d)] <- 0
+
+posts<-c(d[1,2]+d[1,3],d[2,2]+d[2,3],d[3,2]+d[3,3],d[4,2]+d[4,3],d[5,2]+d[5,3],d[6,2]+d[6,3],d[7,2]+d[7,3])
+
+month<-c(1,2,3,4,5,6,7)
+totalposts<-data.frame(month,posts)
+totalposts
+
+```
+```{r}
+ggplot(totalposts,aes(x=month,y=posts))+
+  geom_bar(stat = "identity")+ggtitle("復仇者聯盟4於2019年7月前之討論文章數")
+```
+
+----------------------------------------------------------------
+## 阿翔事件事發於2019-06-12
+資料來源:https://www.mirrormedia.mg/story/20190611ent007/
+## PTT-Womantalk版上對於阿翔事件的討論(僅於6月)
+```{r}
+pttwomana<-data.frame()
+for(id in 1:2)
+{
+  prefix <- "https://www.ptt.cc/bbs/WomenTalk/search?page="
+  url  <- paste0( prefix, as.character(id), "&q=阿翔" )
+  
+  womana <- read_html(url)
+  post_title <- womana%>% 
+    html_nodes(".title a") %>%
+    html_text()
+  post_date <- womana %>% 
+    html_nodes(".date") %>%
+    html_text()  
+  
+  pttwomana <- rbind(pttwomana, data.frame(title= post_title,
+                                                   date= post_date))
+  pttwoman<-pttwomana[-30:-33,]
+}
+```
+## 統計次數並作圖
+```{r}
+ashan<-count(pttwoman,date=as.character(date))
+names(ashan)<-c("date","posts")
+ashan
+ggplot(ashan,aes(x=date,y=posts))+
+geom_bar(stat = "identity")+ggtitle("阿翔事件2019年6月討論文章數")
+```
+
+##結論:阿翔事件事發的當天(6/12)在ptt-womantalk版上馬上有立即的討論串，在6/12~6/14之間都有持續的熱度，而6/16日阿翔宣布將於6/18召開記者會，隔天討論次數上漲到這個週期的最高峰，記者會隔天熱度便下滑，之夠就沒有相關討論了，ptt-womantalk版的使用者對阿翔事件的討論度並沒有持續很長一段時間，僅維持一周左右的時間。可能womantalk版上的使用者對時事的關注度無法維持很長一段時間。
+
+
+---------------------------------------------------------------------
+
+# PTT-Nba版在自由市場開市時(美國時間7/1)針對球星Kawhi Leonard動向之討論串
+
+## 分別在NBA以及Lakers版上搜尋Kawhi、Leonard、可愛等關鍵字，觀察結果NBA版可愛、Kawhi出現之頻率較平均，而Lakers版較常以leonard稱之:
+
+### NBA版搜尋kawhi(6月中至現在之資料)
+```{r}
+pttnbakawhil<-data.frame()
+for(id in 1:4)
+{
+  nbakawhi <- "https://www.ptt.cc/bbs/NBA/search?page="
+  url  <- paste0( nbakawhi, as.character(id), "&q=kawhi" )
+  
+  nbakawhil <- read_html(url)
+  post_title <- nbakawhil%>% 
+    html_nodes(".title a") %>%
+    html_text()
+  post_date <- nbakawhil%>% 
+    html_nodes(".date") %>%
+    html_text()  
+  
+  pttnbakawhil <- rbind(pttnbakawhil, data.frame(title= post_title,
+                                           date= post_date))
+  head(pttnbakawhil)
+}
+```
+### NBA版搜尋可愛(6月中至現在之資料)
+```{r}
+pttnbakaw<-data.frame()
+for(id in 1:8)
+{
+  nbakawhi <- "https://www.ptt.cc/bbs/NBA/search?page="
+  url  <- paste0( nbakawhi, as.character(id), "&q=可愛" )
+  
+  nabkaw <- read_html(url)
+  post_title <- nabkaw%>% 
+    html_nodes(".title a") %>%
+    html_text()
+  post_date <- nabkaw%>% 
+    html_nodes(".date") %>%
+    html_text()  
+  
+  pttnbakaw <- rbind(pttnbakaw, data.frame(title= post_title,
+                                           date= post_date))
+  head(pttnbakaw)
+}
+```
+### Lakers版搜尋leonard(6月中至現在之資料)
+```{r}
+pttnbalaker<-data.frame()
+
+for(id in 2:1)
+{
+  nbalaker <- "https://www.ptt.cc/bbs/Lakers/search?page="
+  url  <- paste0( nbalaker, as.character(id), "&q=leonard" )
+  
+  nablak <- read_html(url)
+  post_title <- nablak%>% 
+    html_nodes(".title a") %>%
+    html_text()
+  post_date <- nablak%>% 
+    html_nodes(".date") %>%
+    html_text()  
+  
+  pttnbalaker <- rbind(pttnbalaker, data.frame(title= post_title,
+                                           date= post_date))
+  head(pttnbalaker)
+}
+```
+
+```{r}
+library(dplyr)
+library(lubridate)
+datac1 <- pttnbakawhil %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+data1<-count(datac1,month)
+
+datac2 <- pttnbakaw %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+data2<-count(datac2,month)
+
+datac3 <- pttnbalaker %>% 
+  mutate(date=as.character(date)) %>%
+  mutate(month= month(as.POSIXlt(date, format="%m/%d")))
+data3<-count(datac3,month)
+
+d<-merge(data1,data2, by = "month", all = T)
+d[is.na(d)] <- 0
+d<-merge(d,data3, by = "month", all = T)
+
+posts<-c(d[1,2]+d[1,3]+d[1,4],d[2,2]+d[2,3]+d[2,4],d[3,2]+d[3,3]+d[3,4])
+
+month<-c(5,6,7)
+totalnba<-data.frame(month,posts)
+totalnba
+
+```
+
+### 繪圖
+```{r}
+ggplot(totalnba,aes(x=month,y=posts))+
+  geom_bar(stat = "identity")+ggtitle("Kawhi Leonard自由市場動向討論數")
+
+```
