@@ -1,9 +1,11 @@
 ---
-title: "final project iphone2015-2018"
+title: "iphone2015-2018"
 author: "Rachel Chang"
 date: "2019/7/22"
 output: html_document
 ---
+
+data source : https://zh-yue.wikipedia.org/wiki/IPhone
 
 **安裝套件**
 ```{r}
@@ -93,7 +95,7 @@ iphone_2018
 
 ```
 
-### 四、作圖(呈現熱潮週期)
+### 四、作圖
 ```{r}
 
 t <- iphone_2018 
@@ -184,7 +186,7 @@ iphone_2017
 
 ```
 
-### 四、作圖(呈現熱潮週期)
+### 四、作圖
 ```{r}
 
 i <- iphone_2017
@@ -254,7 +256,7 @@ iphone_2016
 
 ```
 
-### 三、作圖(呈現熱潮週期)
+### 三、作圖
 ```{r}
 
 j <- iphone_2016
@@ -323,7 +325,7 @@ iphone_data6
 
 ```
 
-### 三、作圖(呈現熱潮週期)
+### 三、作圖
 ```{r}
 
 iphone_2016_3 <- iphone_data6
@@ -393,7 +395,7 @@ iphone_2015
 ```
 
 
-### 三、作圖(呈現熱潮週期)
+### 三、作圖
 ```{r}
 
 colnames(iphone_2015) <- c("month", "posts")
