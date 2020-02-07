@@ -8,4 +8,4 @@
    
    * [Word Cloud](https://rachel0718.github.io/data_science/week%201_0711/World%20Cloud.html)
     
-   * Note
+

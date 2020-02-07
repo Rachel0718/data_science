@@ -6,4 +6,3 @@
    * [HW3 Text Mining](https://rachel0718.github.io/data_science/week%202_0718/Text%20Mining.html)
     
     
-   * Note

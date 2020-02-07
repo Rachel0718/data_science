@@ -1,0 +1,719 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Data Manipulaiton},
+            pdfauthor={Rachel Chang},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Data Manipulaiton}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Rachel Chang}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{2019/7/12}
+
+
+\begin{document}
+\maketitle
+
+data source1 : \url{https://data.worldbank.org/indicator/NY.GDP.MKTP.CD}
+
+data source2 : \url{https://data.worldbank.org/indicator/EN.ATM.CO2E.KT}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{path =}\StringTok{ "D:/資料科學程式設計/data_science/week 1_0711/data CO2/CO2.xlsx"}
+\NormalTok{path2 =}\StringTok{ "D:/資料科學程式設計/data_science/week 1_0711/data GDP/GDP.xlsx"}
+
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages ------------------------------------------------------------------------------------- tidyverse 1.2.1 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.2.0     v purrr   0.3.2
+## v tibble  2.1.3     v dplyr   0.8.3
+## v tidyr   0.8.3     v stringr 1.4.0
+## v readr   1.3.1     v forcats 0.4.0
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ---------------------------------------------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(dplyr) }
+\KeywordTok{library}\NormalTok{(readxl)}
+\NormalTok{c =}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(path)}
+\NormalTok{a =}\StringTok{ }\KeywordTok{read_excel}\NormalTok{(path2)}
+
+\NormalTok{CO2 <-}\StringTok{ }\KeywordTok{select}\NormalTok{(c,}\StringTok{"Country Name"}\NormalTok{,}\StringTok{"2000"}\NormalTok{)}
+\NormalTok{GDP <-}\StringTok{ }\KeywordTok{select}\NormalTok{(a,}\StringTok{"Country Name"}\NormalTok{,}\StringTok{"2000"}\NormalTok{)}
+
+\NormalTok{data_merge<-}\KeywordTok{merge}\NormalTok{(CO2, GDP, }\DataTypeTok{by=}\StringTok{"Country Name"}\NormalTok{)}
+\NormalTok{data_merge}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                             Country Name      2000.x
+## 1                                            Afghanistan  0.03723478
+## 2                                                Albania  0.97817468
+## 3                                                Algeria  2.83037996
+## 4                                         American Samoa          NA
+## 5                                                Andorra  8.01928429
+## 6                                                 Angola  0.58196150
+## 7                                    Antigua and Barbuda  4.53454536
+## 8                                             Arab World  3.70385708
+## 9                                              Argentina  3.85499195
+## 10                                               Armenia  1.12891750
+## 11                                                 Aruba 26.19487524
+## 12                                             Australia 17.20060983
+## 13                                               Austria  7.77425974
+## 14                                            Azerbaijan  3.66627103
+## 15                                          Bahamas, The  5.59798491
+## 16                                               Bahrain 28.05103737
+## 17                                            Bangladesh  0.21831168
+## 18                                              Barbados  4.37584664
+## 19                                               Belarus  5.38974529
+## 20                                               Belgium 11.22966770
+## 21                                                Belize  1.60134242
+## 22                                                 Benin  0.23286097
+## 23                                               Bermuda  8.36199117
+## 24                                                Bhutan  0.67008786
+## 25                                               Bolivia  1.31464231
+## 26                                Bosnia and Herzegovina  3.67562599
+## 27                                              Botswana  2.30061387
+## 28                                                Brazil  1.87644131
+## 29                                British Virgin Islands  5.05519177
+## 30                                     Brunei Darussalam 14.14342743
+## 31                                              Bulgaria  5.32803434
+## 32                                          Burkina Faso  0.08971685
+## 33                                               Burundi  0.04254013
+## 34                                            Cabo Verde  0.50527572
+## 35                                              Cambodia  0.16260585
+## 36                                              Cameroon  0.22124044
+## 37                                                Canada 17.41463895
+## 38                                Caribbean small states  6.52388023
+## 39                                        Cayman Islands 11.00888826
+## 40                              Central African Republic  0.07353286
+## 41                        Central Europe and the Baltics  6.60384328
+## 42                                                  Chad  0.02106550
+## 43                                       Channel Islands          NA
+## 44                                                 Chile  3.83350670
+## 45                                                 China  2.69686243
+## 46                                              Colombia  1.46161945
+## 47                                               Comoros  0.18931442
+## 48                                      Congo, Dem. Rep.  0.01728181
+## 49                                           Congo, Rep.  0.33534511
+## 50                                            Costa Rica  1.38170545
+## 51                                         Cote d'Ivoire  0.41272689
+## 52                                               Croatia  4.32821192
+## 53                                                  Cuba  2.34427134
+## 54                                               Curacao          NA
+## 55                                                Cyprus  7.34729511
+## 56                                        Czech Republic 12.07688904
+## 57                                               Denmark  9.61317555
+## 58                                              Djibouti  0.47524889
+## 59                                              Dominica  1.47417085
+## 60                                    Dominican Republic  2.33621167
+## 61                            Early-demographic dividend  1.71327974
+## 62                                   East Asia & Pacific  3.19758951
+## 63           East Asia & Pacific (excluding high income)  2.31068209
+## 64            East Asia & Pacific (IDA & IBRD countries)  2.30151418
+## 65                                               Ecuador  1.63381035
+## 66                                      Egypt, Arab Rep.  2.05321771
+## 67                                           El Salvador  0.97530306
+## 68                                     Equatorial Guinea  0.75011919
+## 69                                               Eritrea  0.26553732
+## 70                                               Estonia 10.63625164
+## 71                                              Eswatini  1.18168554
+## 72                                              Ethiopia  0.05360010
+## 73                                             Euro area  8.20701362
+## 74                                 Europe & Central Asia  7.60697685
+## 75         Europe & Central Asia (excluding high income)  6.86544426
+## 76          Europe & Central Asia (IDA & IBRD countries)  6.92328804
+## 77                                        European Union  8.01273159
+## 78                                         Faroe Islands 14.75117150
+## 79                                                  Fiji  1.03995531
+## 80                                               Finland 10.12847414
+## 81              Fragile and conflict affected situations  0.76879192
+## 82                                                France  5.94666546
+## 83                                      French Polynesia  2.36152082
+## 84                                                 Gabon  3.82115992
+## 85                                           Gambia, The  0.18645249
+## 86                                               Georgia  1.11256641
+## 87                                               Germany 10.09563988
+## 88                                                 Ghana  0.32620737
+## 89                                             Gibraltar 10.73774817
+## 90                                                Greece  8.47843382
+## 91                                             Greenland  9.46112100
+## 92                                               Grenada  1.85430747
+## 93                                                  Guam          NA
+## 94                                             Guatemala  0.85106744
+## 95                                                Guinea  0.19935321
+## 96                                         Guinea-Bissau  0.12210096
+## 97                                                Guyana  2.15586000
+## 98                                                 Haiti  0.16160472
+## 99                Heavily indebted poor countries (HIPC)  0.16337745
+## 100                                          High income 12.21457695
+## 101                                             Honduras  0.76524711
+## 102                                 Hong Kong SAR, China  6.06746827
+## 103                                              Hungary  5.46729669
+## 104                                            IBRD only  2.63928045
+## 105                                              Iceland  7.69378212
+## 106                                     IDA & IBRD total  2.18107372
+## 107                                            IDA blend  0.95251793
+## 108                                             IDA only  0.25924227
+## 109                                            IDA total  0.49587337
+## 110                                                India  0.97660169
+## 111                                            Indonesia  1.24539825
+## 112                                   Iran, Islamic Rep.  5.67232331
+## 113                                                 Iraq  3.08309352
+## 114                                              Ireland 10.83474264
+## 115                                          Isle of Man          NA
+## 116                                               Israel  9.58177946
+## 117                                                Italy  7.91267317
+## 118                                              Jamaica  3.88289943
+## 119                                                Japan  9.62235162
+## 120                                               Jordan  3.02738198
+## 121                                           Kazakhstan  7.93485418
+## 122                                                Kenya  0.32592183
+## 123                                             Kiribati  0.34759941
+## 124                            Korea, Dem. People’s Rep.  3.03815130
+## 125                                          Korea, Rep.  9.52093176
+## 126                                               Kosovo          NA
+## 127                                               Kuwait 26.18923263
+## 128                                      Kyrgyz Republic  0.94624530
+## 129                                              Lao PDR  0.17633450
+## 130                            Late-demographic dividend  3.40308749
+## 131                            Latin America & Caribbean  2.60516470
+## 132    Latin America & Caribbean (excluding high income)  2.50912168
+## 133 Latin America & the Caribbean (IDA & IBRD countries)  2.58475224
+## 134                                               Latvia  2.68262296
+## 135         Least developed countries: UN classification  0.16890457
+## 136                                              Lebanon  3.96780298
+## 137                                              Lesotho  0.91097568
+## 138                                              Liberia  0.14804687
+## 139                                                Libya  8.79331364
+## 140                                        Liechtenstein          NA
+## 141                                            Lithuania  3.47572907
+## 142                                  Low & middle income  2.13059566
+## 143                                           Low income  0.39048037
+## 144                                  Lower middle income  1.05069498
+## 145                                           Luxembourg 18.88551226
+## 146                                     Macao SAR, China  3.81459482
+## 147                                           Madagascar  0.11884696
+## 148                                               Malawi  0.07795299
+## 149                                             Malaysia  5.42091501
+## 150                                             Maldives  1.61433153
+## 151                                                 Mali  0.07503879
+## 152                                                Malta  5.29246296
+## 153                                     Marshall Islands  1.51728962
+## 154                                           Mauritania  0.44613776
+## 155                                            Mauritius  2.26778939
+## 156                                               Mexico  4.02814463
+## 157                                Micronesia, Fed. Sts.  1.16085362
+## 158                           Middle East & North Africa  4.67145163
+## 159   Middle East & North Africa (excluding high income)  3.12368988
+## 160    Middle East & North Africa (IDA & IBRD countries)  3.15385309
+## 161                                        Middle income  2.29646366
+## 162                                              Moldova  0.96521423
+## 163                                               Monaco          NA
+## 164                                             Mongolia  3.13101387
+## 165                                           Montenegro          NA
+## 166                                              Morocco  1.17751823
+## 167                                           Mozambique  0.07618911
+## 168                                              Myanmar  0.21592426
+## 169                                              Namibia  0.91543661
+## 170                                                Nauru  8.15913708
+## 171                                                Nepal  0.12820120
+## 172                                          Netherlands 10.89472628
+## 173                                        New Caledonia 10.47321202
+## 174                                          New Zealand  8.54939420
+## 175                                            Nicaragua  0.74218147
+## 176                                                Niger  0.06148581
+## 177                                              Nigeria  0.62197295
+## 178                                        North America 19.90535096
+## 179                                      North Macedonia  5.92899418
+## 180                             Northern Mariana Islands          NA
+## 181                                               Norway  8.83401570
+## 182                                       Not classified          NA
+## 183                                         OECD members 11.08021443
+## 184                                                 Oman  9.65428469
+## 185                                   Other small states  5.03228355
+## 186                          Pacific island small states  0.96231908
+## 187                                             Pakistan  0.74783383
+## 188                                                Palau 13.05187124
+## 189                                               Panama  1.91074795
+## 190                                     Papua New Guinea  0.45589907
+## 191                                             Paraguay  0.69300445
+## 192                                                 Peru  1.14500446
+## 193                                          Philippines  0.93993265
+## 194                                               Poland  7.82279833
+## 195                                             Portugal  6.09640339
+## 196                            Post-demographic dividend 12.01487813
+## 197                             Pre-demographic dividend  0.39159877
+## 198                                          Puerto Rico          NA
+## 199                                                Qatar 58.61946468
+## 200                                              Romania  4.04051866
+## 201                                   Russian Federation 10.62712053
+## 202                                               Rwanda  0.06655776
+## 203                                                Samoa  0.81977484
+## 204                                           San Marino          NA
+## 205                                Sao Tome and Principe  0.33509300
+## 206                                         Saudi Arabia 14.36980164
+## 207                                              Senegal  0.40196621
+## 208                                               Serbia          NA
+## 209                                           Seychelles  7.05096695
+## 210                                         Sierra Leone  0.09278338
+## 211                                            Singapore 12.16662434
+## 212                            Sint Maarten (Dutch part)          NA
+## 213                                      Slovak Republic  6.65932949
+## 214                                             Slovenia  7.23840366
+## 215                                         Small states  5.09336993
+## 216                                      Solomon Islands  0.36433626
+## 217                                              Somalia  0.05414374
+## 218                                         South Africa  8.42082992
+## 219                                           South Asia  0.84913455
+## 220                              South Asia (IDA & IBRD)  0.84913455
+## 221                                          South Sudan          NA
+## 222                                                Spain  7.25782435
+## 223                                            Sri Lanka  0.54523813
+## 224                                  St. Kitts and Nevis  3.91044607
+## 225                                            St. Lucia  2.10573665
+## 226                             St. Martin (French part)          NA
+## 227                       St. Vincent and the Grenadines  1.36086989
+## 228                                   Sub-Saharan Africa  0.84849423
+## 229           Sub-Saharan Africa (excluding high income)  0.84773618
+## 230            Sub-Saharan Africa (IDA & IBRD countries)  0.84849423
+## 231                                                Sudan  0.15913371
+## 232                                             Suriname  4.66405704
+## 233                                               Sweden  5.56243008
+## 234                                          Switzerland  5.43548498
+## 235                                 Syrian Arab Republic  3.11019717
+## 236                                           Tajikistan  0.35983708
+## 237                                             Tanzania  0.07914346
+## 238                                             Thailand  2.87947901
+## 239                                          Timor-Leste          NA
+## 240                                                 Togo  0.27626847
+## 241                                                Tonga  0.97314566
+## 242                                  Trinidad and Tobago 18.81317173
+## 243                                              Tunisia  2.05213152
+## 244                                               Turkey  3.41794200
+## 245                                         Turkmenistan  8.31221733
+## 246                             Turks and Caicos Islands  3.45531641
+## 247                                               Tuvalu  0.78071109
+## 248                                               Uganda  0.06047017
+## 249                                              Ukraine  6.52561878
+## 250                                 United Arab Emirates 35.91576427
+## 251                                       United Kingdom  9.19954923
+## 252                                        United States 20.17875051
+## 253                                  Upper middle income  3.52213738
+## 254                                              Uruguay  1.59836475
+## 255                                           Uzbekistan  4.94226224
+## 256                                              Vanuatu  0.45596631
+## 257                                        Venezuela, RB  6.30041799
+## 258                                              Vietnam  0.67130855
+## 259                                Virgin Islands (U.S.)          NA
+## 260                                   West Bank and Gaza  0.27105768
+## 261                                                World  4.03752633
+## 262                                          Yemen, Rep.  0.84107476
+## 263                                               Zambia  0.17497204
+## 264                                             Zimbabwe  1.17187442
+##           2000.y
+## 1             NA
+## 2   3.480355e+09
+## 3   5.479025e+10
+## 4             NA
+## 5   1.434430e+09
+## 6   9.129595e+09
+## 7   8.301588e+08
+## 8   7.351881e+11
+## 9   2.842038e+11
+## 10  1.911564e+09
+## 11  1.873453e+09
+## 12  4.152226e+11
+## 13  1.967998e+11
+## 14  5.272617e+09
+## 15  8.076470e+09
+## 16  9.062907e+09
+## 17  5.336979e+10
+## 18  3.121500e+09
+## 19  1.273686e+10
+## 20  2.379049e+11
+## 21  8.320725e+08
+## 22  2.569187e+09
+## 23  3.480219e+09
+## 24  4.391582e+08
+## 25  8.397913e+09
+## 26  5.505888e+09
+## 27  5.788330e+09
+## 28  6.554206e+11
+## 29            NA
+## 30  6.001153e+09
+## 31  1.315302e+10
+## 32  2.628920e+09
+## 33  8.704861e+08
+## 34  5.392273e+08
+## 35  3.677898e+09
+## 36  1.008394e+10
+## 37  7.422955e+11
+## 38  3.417785e+10
+## 39            NA
+## 40  9.145003e+08
+## 41  4.276465e+11
+## 42  1.385058e+09
+## 43  6.439703e+09
+## 44  7.786093e+10
+## 45  1.211347e+12
+## 46  9.988658e+10
+## 47  3.502643e+08
+## 48  1.908805e+10
+## 49  3.219911e+09
+## 50  1.494951e+10
+## 51  1.071702e+10
+## 52  2.177427e+10
+## 53  3.056540e+10
+## 54            NA
+## 55  9.985844e+09
+## 56  6.164949e+10
+## 57  1.641588e+11
+## 58  5.512309e+08
+## 59  3.334689e+08
+## 60  2.430512e+10
+## 61  3.295338e+12
+## 62  8.281309e+12
+## 63  1.735179e+12
+## 64  1.731601e+12
+## 65  1.832776e+10
+## 66  9.983854e+10
+## 67  1.178493e+10
+## 68  1.045998e+09
+## 69  7.063708e+08
+## 70  5.685775e+09
+## 71  1.738101e+09
+## 72  8.242392e+09
+## 73  6.484574e+12
+## 74  1.002298e+13
+## 75  6.979444e+11
+## 76  8.916048e+11
+## 77  8.910187e+12
+## 78  1.058703e+09
+## 79  1.684110e+09
+## 80  1.255399e+11
+## 81  2.198017e+11
+## 82  1.362249e+12
+## 83  3.447543e+09
+## 84  5.067865e+09
+## 85  7.829154e+08
+## 86  3.057425e+09
+## 87  1.949954e+12
+## 88  4.983024e+09
+## 89            NA
+## 90  1.301338e+11
+## 91  1.068031e+09
+## 92  5.200444e+08
+## 93            NA
+## 94  1.928883e+10
+## 95  2.995361e+09
+## 96  3.701738e+08
+## 97  7.126679e+08
+## 98  3.953846e+09
+## 99  1.624449e+11
+## 100 2.758556e+13
+## 101 7.103508e+09
+## 102 1.716682e+11
+## 103 4.731062e+10
+## 104 5.804803e+12
+## 105 9.003639e+09
+## 106 6.262975e+12
+## 107 2.005546e+11
+## 108 2.581898e+11
+## 109 4.602819e+11
+## 110 4.683949e+11
+## 111 1.650210e+11
+## 112 1.095917e+11
+## 113           NA
+## 114 9.985296e+10
+## 115 1.563668e+09
+## 116 1.322437e+11
+## 117 1.141760e+12
+## 118 8.985353e+09
+## 119 4.887520e+12
+## 120 8.460424e+09
+## 121 1.829199e+10
+## 122 1.270536e+10
+## 123 6.725417e+07
+## 124           NA
+## 125 5.616331e+11
+## 126 1.849196e+09
+## 127 3.771186e+10
+## 128 1.369693e+09
+## 129 1.731198e+09
+## 130 3.402211e+12
+## 131 2.286931e+12
+## 132 2.082505e+12
+## 133 2.174346e+12
+## 134 7.937759e+09
+## 135 2.127406e+11
+## 136 1.726036e+10
+## 137 8.872953e+08
+## 138 8.740000e+08
+## 139 3.827021e+10
+## 140 2.483953e+09
+## 141 1.153921e+10
+## 142 5.985798e+12
+## 143 1.379770e+11
+## 144 1.292547e+12
+## 145 2.126351e+10
+## 146 6.720492e+09
+## 147 3.877674e+09
+## 148 1.743507e+09
+## 149 9.378974e+10
+## 150 6.243371e+08
+## 151 2.954130e+09
+## 152 4.306192e+09
+## 153 1.109377e+08
+## 154 1.293654e+09
+## 155 4.663314e+09
+## 156 7.079067e+11
+## 157 2.332263e+08
+## 158 9.669405e+11
+## 159 4.516736e+11
+## 160 4.473114e+11
+## 161 5.850970e+12
+## 162 1.288429e+09
+## 163 2.647884e+09
+## 164 1.136896e+09
+## 165 9.842976e+08
+## 166 3.885725e+10
+## 167 5.016469e+09
+## 168 8.905066e+09
+## 169 3.833994e+09
+## 170           NA
+## 171 5.494252e+09
+## 172 4.164428e+11
+## 173 2.682347e+09
+## 174 5.262328e+10
+## 175 5.107329e+09
+## 176 1.798374e+09
+## 177 6.944876e+10
+## 178 1.099812e+13
+## 179 3.772851e+09
+## 180           NA
+## 181 1.713156e+11
+## 182           NA
+## 183 2.737872e+13
+## 184 1.950741e+10
+## 185 9.170470e+10
+## 186 3.444111e+09
+## 187 7.395237e+10
+## 188 1.447595e+08
+## 189 1.230412e+10
+## 190 3.521340e+09
+## 191 8.855705e+09
+## 192 5.174475e+10
+## 193 8.102630e+10
+## 194 1.718861e+11
+## 195 1.183585e+11
+## 196 2.626197e+13
+## 197 2.405395e+11
+## 198 6.170180e+10
+## 199 1.775989e+10
+## 200 3.725326e+10
+## 201 2.597101e+11
+## 202 1.813939e+09
+## 203 2.690197e+08
+## 204 1.101898e+09
+## 205           NA
+## 206 1.895149e+11
+## 207 5.924240e+09
+## 208 6.540246e+09
+## 209 6.148798e+08
+## 210 6.358740e+08
+## 211 9.607448e+10
+## 212           NA
+## 213 2.911488e+10
+## 214 2.034220e+10
+## 215 1.293223e+11
+## 216 4.351039e+08
+## 217           NA
+## 218 1.363619e+11
+## 219 6.223723e+11
+## 220 6.223723e+11
+## 221           NA
+## 222 5.954026e+11
+## 223 1.633081e+10
+## 224 4.335205e+08
+## 225 8.343273e+08
+## 226           NA
+## 227 3.962614e+08
+## 228 3.968111e+11
+## 229 3.961921e+11
+## 230 3.968111e+11
+## 231 1.225742e+10
+## 232 9.476720e+08
+## 233 2.601587e+11
+## 234 2.720555e+11
+## 235 1.932589e+10
+## 236 8.605211e+08
+## 237 1.337598e+10
+## 238 1.263923e+11
+## 239 4.396461e+08
+## 240 1.488186e+09
+## 241 2.023635e+08
+## 242 8.154338e+09
+## 243 2.147319e+10
+## 244 2.729794e+11
+## 245 2.904663e+09
+## 246           NA
+## 247 1.374206e+07
+## 248 6.193247e+09
+## 249 3.126153e+10
+## 250 1.043374e+11
+## 251 1.648269e+12
+## 252 1.025235e+13
+## 253 4.558739e+12
+## 254 2.282326e+10
+## 255 1.376051e+10
+## 256 2.720147e+08
+## 257 1.171407e+11
+## 258 3.117252e+10
+## 259           NA
+## 260 4.313600e+09
+## 261 3.358157e+13
+## 262 9.652436e+09
+## 263 3.600683e+09
+## 264 6.689958e+09
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{##visualizing data}
+\KeywordTok{plot}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ data_merge}\OperatorTok{$}\StringTok{'2000.y'}\NormalTok{ , }\DataTypeTok{y =}\NormalTok{ data_merge}\OperatorTok{$}\StringTok{'2000.x'}\NormalTok{,}\DataTypeTok{log=}\StringTok{"x"}\NormalTok{,}\DataTypeTok{main =} \StringTok{"Relationship between GDP and CO2 in 2000"}\NormalTok{,}\DataTypeTok{xlab=}\StringTok{"GDP (current US$)"}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{"CO2 emissions (kt)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Data_Manipulation_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+
+\end{document}

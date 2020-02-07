@@ -5,6 +5,4 @@
    * [Visualizing Data](https://rachel0718.github.io/data_science/week%202_0715/Visualizing%20Data.html)
    
    * [HW2 Data Visualization](https://rachel0718.github.io/data_science/week%202_0715/Data%20Visualization.html)
-    
-    
-   * Note
+ 

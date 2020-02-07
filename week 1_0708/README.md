@@ -8,8 +8,4 @@
     
    * [HW0][R Markdown](https://rachel0718.github.io/data_science/week%201_0708/hw_0.html)
     
-   * Note
    
-     * [R_basic](https://rachel0718.github.io/data_science/week%201_0708/R_basic.html)
-     
-     * [R_intermedtiate]

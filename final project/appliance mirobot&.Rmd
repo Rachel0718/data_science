@@ -1,0 +1,139 @@
+---
+title: "appliance mirobot&"
+author: "Rachel Chang"
+date: "2019/7/21"
+output: html_document
+---
+
+**安裝套件**
+```{r}
+library(bitops)
+library(httr)
+library(RCurl)
+library(XML)
+library(tm)
+library(NLP)
+library(tmcn)
+library(jiebaRD)
+library(jiebaR)
+library(rvest)
+library(stringr)
+```
+
+## 2016-8-31 小米掃地機器人
+### 一、爬出ptt-e-appliance文章標題
+
+**遇到的困難:跨年分須進入內文抓取年份和日期**
+```{r}
+library(bitops)
+library(httr)
+library(RCurl)
+library(XML)
+library(tm)
+library(NLP)
+library(tmcn)
+from <- 4 
+to   <- 1 
+prefix = "https://www.ptt.cc/bbs/E-appliance/search?page="
+
+data <- list()
+for( id in c(from:to) )
+{
+  url  <- paste0( prefix, as.character(id), "&q=小米掃地機器人" )
+  html <- htmlParse( GET(url) )
+  url.list <- xpathSApply( html, "//div[@class='title']/a[@href]", xmlAttrs )
+  data <- rbind( data, as.matrix(paste('https://www.ptt.cc', url.list, sep='')) )
+}
+data <- unlist(data)
+
+head(data)
+```
+
+```{r}
+library(dplyr)
+library(RCurl)
+
+robot <- data.frame() 
+
+for(id in 1:68){
+  # html <- htmlParse(getURL(url))
+  # doc  <- xpathSApply( html, "//div[@id='title']", xmlValue )
+  # id <- substr(url,32,49)
+  url <-data[id]
+  html <- read_html(url)
+  title <- html %>%     
+    html_node(".article-metaline-right+ .article-metaline .article-meta-value") %>%
+    html_text
+  date <- html%>% 
+    html_node(".article-metaline+ .article-metaline .article-meta-value") %>%
+    html_text
+  robot <- rbind(robot, data.frame(title, date))
+}
+head(robot)
+
+```
+
+### 二、依照year_month合併儲存
+
+**遇到的困難:符號轉換->使用substr函數**
+
+[test]
+library(dplyr)
+library(lubridate)
+robot_2016 <- robot %>% 
+  mutate(date=as.character(date)) #%>%
+  #mutate(month=month(as.POSIXct("date", format="%a %b %d %H:%M:%S %Y")))
+  #mutate(month=month(as.POSIXct(date, format="%a %b %d %H:%M:%S %Y")))
+  #mutate(month=as.POSIXct(date, format="%a %b %d %H:%M:%S %Y"))
+head(robot_2016)
+
+```{r}
+
+d1<-substr(robot$date,5,7)
+kable(head(d1))
+d2<-substr(robot$date,21,24)
+kable(head(d2))
+
+u <- c("Jan"="01","Feb"="02","Mar"="03","Apr"="04","May"="05","Jun"="06","Jul"="07","Aug"="08","Sep"="09","Oct"=10,"Nov"=11,"Dec"=12)
+
+robot_2016<-paste(d2,u[d1])
+kable(head(robot_2016))
+
+```
+
+**遇到的困難:轉換成dataframe**
+
+```{r}
+library(plyr)
+mirobot<-table(robot_2016)
+head(as.data.frame(mirobot)) # 本質上還是table，需要assign回去
+
+mirobot <- table(robot_2016)
+mirobot <- data.frame(mirobot) #assign
+head(mirobot)
+
+
+```
+
+### 四、作圖(呈現熱潮週期)
+
+```{r}
+
+mirobot_2016 <- mirobot
+colnames(mirobot_2016) <- c("time", "posts")
+head(mirobot_2016)
+
+mirobot_2016 <- mirobot_2016[-c(14:27),] 
+mirobot_2016 
+
+library(ggplot2)
+ggplot(mirobot_2016, aes(x=time,y=posts))+
+       geom_bar(stat="identity",width=0.5)+
+       ggtitle("ptt posts of new mirobot")+
+       geom_text(aes(label=posts),vjust=1.6, color="white", size=3.5)
+       
+
+```
+
+
+
