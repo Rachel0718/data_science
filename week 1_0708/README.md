@@ -8,4 +8,3 @@
     
    * [HW0][R Markdown](https://rachel0718.github.io/data_science/week%201_0708/hw_0.html)
     
-   
